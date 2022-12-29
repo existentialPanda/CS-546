@@ -23,6 +23,7 @@
 
 // myDivBtn.addEventListener('click', () => {
 //   let newP = document.createElement('p');
+//   newP.className = 'myClassOne';
 //   newP.innerHTML = "I'm another P tag";
 //   divContainer.appendChild(newP);
 // });

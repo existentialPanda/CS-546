@@ -3,38 +3,41 @@
   <form action="/posts" method="POST" class="new-post-form">
     <label>
       Post Title
-      <input type="text" name="title" placeholder="Post Title" value="{{post.title}}" class="full-width-input"/>
+      <input type="text" name="title" placeholder="Post Title" value="{{post.title}}" class="full-width-input" required>
     </label>
-     
+
     <label for="post-body">
       Post Body
     </label>
-    <textarea id="post-body" name="body" rows="4" placeholder="Post Content" class="full-width-input">{{post.body}}</textarea>
+    <textarea id="post-body" name="body" rows="4" placeholder="Post Content"
+      class="full-width-input">{{post.body}}</textarea>
 
     <label for="poster">
       Poster
     </label>
-    <select class="full-width-input" name="posterId">
+    <select class="full-width-input" name="posterId" id="poster">
       <option value="">Select User...</option>
       {{#each users}}
-        <option value="{{_id}}">{{firstName}} {{lastName}}</option>
+      <option value="{{_id}}">{{firstName}} {{lastName}}</option>
       {{/each}}
     </select>
     <label>
-      <input type="radio" name="user-test" value="1" /> One
+      <input type="radio" name="user-test" value="1"> One
     </label>
     <label>
-      <input type="radio" name="user-test" value="2" /> Two
+      <input type="radio" name="user-test" value="2"> Two
     </label>
 
     <div>
       <label>
-      <input type="checkbox" name="checkbox-test" value="first" /> First
-  </label></div>
+        <input type="checkbox" name="checkbox-test" value="first"> First
+      </label>
+    </div>
     <div>
       <label>
-      <input type="checkbox" name="checkbox-test" value="second" /> Second
-  </label></div>
+        <input type="checkbox" name="checkbox-test" value="second"> Second
+      </label>
+    </div>
     <button type="submit">Create New Post</button>
     <button type="reset">Clear Form</button>
     <button type="button">Click me!</button>

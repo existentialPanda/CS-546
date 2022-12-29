@@ -2,8 +2,12 @@
   <h1>Posts</h1>
   {{#each posts}}  
     <article class="post">
-      <h2><a href="/posts/{{_id}}">{{title}}</a></h2>
+      <h2><a href="/posts/{{_id}}">{{{title}}}</a></h2>
       <p>{{body}}</p>
     </article>
+  {{/each}}
+
+   {{#each users}}  
+   <p>{{firstName}}</p>
   {{/each}}
 </section>

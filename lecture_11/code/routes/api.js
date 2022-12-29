@@ -4,10 +4,14 @@ const todoData = require('../data');
 const xss = require('xss');
 
 router.post('/todo', function (request, response) {
-  todoData.makeToDo(xss(request.body.name), xss(request.body.description));
-
-  // response.json({ success: true, message: request.body.description });
-  response.json({success: true, message: xss(request.body.description)});
+  let cleanName = xss(request.body.name);
+  let cleanDesc = xss(request.body.description);
+  todoData.makeToDo(cleanName, cleanDesc);
+  response.json({
+    success: true,
+    name: cleanName,
+    desc: cleanDesc,
+  });
 });
 
 router.post('/todo/complete/:id', function (request, response) {

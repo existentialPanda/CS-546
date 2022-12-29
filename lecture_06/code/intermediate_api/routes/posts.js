@@ -118,7 +118,10 @@ router.patch('/:id', async (req, res) => {
       updatedObject.body = requestBody.body;
     if (requestBody.tags && requestBody.tags !== oldPost.tags)
       updatedObject.tags = requestBody.tags;
-    if (requestBody.posterId && requestBody.posterId !== oldPost.posterId)
+    if (
+      requestBody.posterId &&
+      requestBody.posterId !== oldPost.poster.id.toString()
+    )
       updatedObject.posterId = requestBody.posterId;
   } catch (e) {
     return res.status(404).json({error: 'Post not found'});
@@ -136,7 +139,7 @@ router.patch('/:id', async (req, res) => {
   } else {
     res.status(400).json({
       error:
-        'No fields have been changed from their inital values, so no update has occurred'
+        'No fields have been changed from their inital values, so no update has occurred',
     });
   }
 });

@@ -32,7 +32,7 @@
       if (num2 <= 0) throw 'Cannot divide by 0!';
 
       return num1 / num2;
-    }
+    },
   };
 
   function operationStringToFunction(operation) {
@@ -56,14 +56,12 @@
     const operationElement = document.getElementById('operation');
 
     const errorContainer = document.getElementById('error-container');
-    const errorTextElement = errorContainer.getElementsByClassName(
-      'text-goes-here'
-    )[0];
+    const errorTextElement =
+      errorContainer.getElementsByClassName('text-goes-here')[0];
 
     const resultContainer = document.getElementById('result-container');
-    const resultTextElement = resultContainer.getElementsByClassName(
-      'text-goes-here'
-    )[0];
+    const resultTextElement =
+      resultContainer.getElementsByClassName('text-goes-here')[0];
 
     // We can take advantage of functional scoping; our event listener has access to its outer functional scope
     // This means that these variables are accessible in our callback
@@ -83,6 +81,8 @@
         const parsedFirstNumberValue = parseInt(firstNumberValue);
         console.log(typeof parsedFirstNumberValue);
         const parsedSecondNumberValue = parseInt(secondNumberValue);
+        console.log(typeof parsedSecondNumberValue);
+
         const operation = operationStringToFunction(operationValue);
 
         const result = operation(

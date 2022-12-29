@@ -3,9 +3,11 @@ const router = express.Router();
 const data = require('../data');
 const postData = data.posts;
 const validation = require('../data/validation');
+
 router
   .route('/:id')
   .get(async (req, res) => {
+    console.log(typeof req.params.id);
     try {
       req.params.id = validation.checkId(req.params.id);
       const post = await postData.getPostById(req.params.id);

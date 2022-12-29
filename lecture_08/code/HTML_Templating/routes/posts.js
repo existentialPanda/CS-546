@@ -6,13 +6,13 @@ const userData = data.users;
 
 router.get('/new', async (req, res) => {
   const users = await userData.getAllUsers();
-  res.render('posts/new', {users: users});
+  res.render('posts/new', {users: users, title: 'Add a new post'});
 });
 
 router.get('/:id', async (req, res) => {
   try {
     const post = await postData.getPostById(req.params.id);
-    res.render('posts/single', {post: post});
+    res.render('posts/single', {post: post, title: 'Single Post'});
   } catch (e) {
     res.status(500).json({error: e});
   }
@@ -25,7 +25,7 @@ router.get('/tag/:tag', async (req, res) => {
 
 router.get('/', async (req, res) => {
   const postList = await postData.getAllPosts();
-  res.render('posts/index', {posts: postList});
+  res.render('posts/index', {posts: postList, title: 'Post list'});
 });
 
 router.post('/', async (req, res) => {
@@ -50,7 +50,7 @@ router.post('/', async (req, res) => {
       errors: errors,
       hasErrors: true,
       post: blogPostData,
-      users: users
+      users: users,
     });
     return;
   }

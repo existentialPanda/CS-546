@@ -21,13 +21,12 @@ module.exports = {
 
   async getAllDogs() {
     const dogCollection = await dogs();
-    const dogList = await dogCollection.find({}).toArray();
+    const dogList = await dogCollection.find().toArray();
     if (!dogList) throw 'Could not get all dogs';
     return dogList;
   },
 
   async addDog(name, breeds) {
-    let breedInvalidFlag = false;
     if (!name) throw 'You must provide a name for your dog';
     if (typeof name !== 'string') throw 'Name must be a string';
     if (name.trim().length === 0)
@@ -35,21 +34,20 @@ module.exports = {
     if (!breeds || !Array.isArray(breeds))
       throw 'You must provide an array of breeds';
     if (breeds.length === 0) throw 'You must supply at least one breed';
+
     for (i in breeds) {
       if (typeof breeds[i] !== 'string' || breeds[i].trim().length === 0) {
-        breedInvalidFlag = true;
-        break;
+        throw 'One or more breeds is not a string or is an empty string';
       }
       breeds[i] = breeds[i].trim();
     }
-    if (breedInvalidFlag)
-      throw 'One or more breeds is not a string or is an empty string';
+
     name = name.trim();
     const dogCollection = await dogs();
 
     let newDog = {
       name: name,
-      breeds: breeds
+      breeds: breeds,
     };
 
     const insertInfo = await dogCollection.insertOne(newDog);
@@ -78,7 +76,6 @@ module.exports = {
     return {deleted: true};
   },
   async updateDog(id, name, breeds) {
-    let breedInvalidFlag = false;
     if (!id) throw 'You must provide an id to search for';
     if (typeof id !== 'string') throw 'Id must be a string';
     if (id.trim().length === 0)
@@ -94,19 +91,16 @@ module.exports = {
     if (breeds.length === 0) throw 'You must supply at least one breed';
     for (i in breeds) {
       if (typeof breeds[i] !== 'string' || breeds[i].trim().length === 0) {
-        breedInvalidFlag = true;
-        break;
+        throw 'One or more breeds is not a string or is an empty string';
       }
       breeds[i] = breeds[i].trim();
     }
-    if (breedInvalidFlag)
-      throw 'One or more breeds is not a string or is an empty string';
     name = name.trim();
 
     const dogCollection = await dogs();
     const updatedDog = {
       name: name,
-      breeds: breeds
+      breeds: breeds,
     };
 
     const updatedInfo = await dogCollection.updateOne(
@@ -118,5 +112,5 @@ module.exports = {
     }
 
     return await this.getDogById(id);
-  }
+  },
 };

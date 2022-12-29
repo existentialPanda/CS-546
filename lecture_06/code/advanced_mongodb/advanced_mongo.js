@@ -35,7 +35,8 @@ module.exports = {
   getAllMoviesExcludeReviewsInfoCast: async () => {
     const movieCollection = await movies();
     const movieList = await movieCollection
-      .find({}, {projection: {_id: 0, reviews: 0, info: 0, cast: 0}})
+      .find({})
+      .project({_id: 1, reviews: 0, info: 0, cast: 0})
       .toArray();
     return movieList;
   },
@@ -113,9 +114,9 @@ module.exports = {
     const movieCollection = await movies();
     const movieList = await movieCollection
       .find({})
+      .sort({title: -1})
       .skip(2)
       .limit(3)
-      .sort({title: -1})
       .toArray();
     return movieList;
   },
@@ -198,7 +199,7 @@ module.exports = {
     // test with: findMoviesWithDirectorAndYear("Christopher Nolan", 2012)
     return await movieCollection
       .find({
-        $and: [{'info.release': releaseYear}, {'info.director': directorName}]
+        $and: [{'info.release': releaseYear}, {'info.director': directorName}],
       })
       .toArray();
   },
@@ -213,7 +214,7 @@ module.exports = {
     // test with: findMoviesWithDirectorOrYear("Christopher Nolan", 2015)
     return await movieCollection
       .find({
-        $or: [{'info.release': releaseYear}, {'info.director': directorName}]
+        $or: [{'info.release': releaseYear}, {'info.director': directorName}],
       })
       .toArray();
   },
@@ -230,7 +231,7 @@ module.exports = {
     return await movieCollection
       .updateOne({_id: id}, {$set: {title: newTitle}})
       .then(async function () {
-        return await this.getMovie(id);
+        return await module.exports.getMovie(id);
       });
   },
 
@@ -337,7 +338,7 @@ module.exports = {
     // if our new cast member is already listed, this will be ignored
     // Try it out -- add Matthew McConaughey
     return movieCollection
-      .updateOne({_id: id}, {$addToSet: {cast: newCastMember}})
+      .updateOne({_id: id}, {$eleMatch: {cast: newCastMember}})
       .then(function () {
         //return getMovie(id);
       });
@@ -402,5 +403,5 @@ module.exports = {
       .then(function () {
         return module.exports.getMovie(id);
       });
-  }
+  },
 };

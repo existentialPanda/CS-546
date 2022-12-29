@@ -14,7 +14,7 @@
 
       var requestConfig = {
         method: 'POST',
-        url: '/api/todo/complete/' + currentId
+        url: '/api/todo/complete/' + currentId,
       };
 
       $.ajax(requestConfig).then(function (responseMessage) {
@@ -37,7 +37,7 @@
     var newContent = $('#new-content');
 
     if (newName && newDescription) {
-      var useJson = false;
+      var useJson = true;
       if (useJson) {
         var requestConfig = {
           method: 'POST',
@@ -45,13 +45,16 @@
           contentType: 'application/json',
           data: JSON.stringify({
             name: newName,
-            description: newDescription
-          })
+            description: newDescription,
+          }),
         };
 
         $.ajax(requestConfig).then(function (responseMessage) {
           console.log(responseMessage);
-          newContent.html(responseMessage.message);
+          const p1 = `<p> ${responseMessage.name} </p>`;
+          const p2 = `<p> ${responseMessage.desc} </p>`;
+          newContent.append(p1, p2);
+          //newContent.html(responseMessage.name);
           //                alert("Data Saved: " + msg);
         });
       } else {
@@ -61,8 +64,8 @@
           contentType: 'application/json',
           data: JSON.stringify({
             name: newName,
-            description: newDescription
-          })
+            description: newDescription,
+          }),
         };
 
         $.ajax(requestConfig).then(function (responseMessage) {

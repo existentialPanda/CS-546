@@ -15,6 +15,10 @@ router.put('/server', (req, res) => {
   res.render('calculator/server', {});
 });
 
+router.patch('/server', (req, res) => {
+  console.log('in patch route');
+});
+
 router.post('/server', (req, res) => {
   let operation = (req.body.operation || 'add').toLowerCase();
   let firstNumber = parseInt(req.body.number1);
@@ -43,7 +47,7 @@ router.post('/server', (req, res) => {
       firstNumber: firstNumber,
       secondNumber: secondNumber,
       operation: operation,
-      error: e
+      error: e,
     });
     return;
   }
@@ -52,7 +56,7 @@ router.post('/server', (req, res) => {
     firstNumber: firstNumber,
     secondNumber: secondNumber,
     operation: operation,
-    result: result
+    result: result,
   });
 });
 

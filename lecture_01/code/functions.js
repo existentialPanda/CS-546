@@ -1,9 +1,9 @@
 function myGlobalFunction() {
-  console.log("I'm a global function");
+  return console.log("I'm a global function");
 }
 
-myGlobalFunction();
-
+console.log(myGlobalFunction());
+let y = 5;
 function printThisMessage(message) {
   console.log("We've received a message!");
   console.log(message);
@@ -34,15 +34,6 @@ let addToTheNumber = (num) => {
 let addToTwelve = addToTheNumber(12);
 console.log(addToTwelve);
 console.log(addToTwelve(8));
-
-function printSquaresUntil(num) {
-  for (let i = 2; i < num; i++) {
-    let num = i * i;
-    console.log(`the square of ${i} is ${num}`);
-  }
-}
-
-printSquaresUntil(12);
 
 function haveAnInnerFunction() {
   function myInnerFunction() {
