@@ -36,5 +36,5 @@ node_modules
 .DS_Store
 
 Scratch
-package-lock.json
+
 .env
