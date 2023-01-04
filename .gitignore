@@ -38,3 +38,4 @@ node_modules
 Scratch
 package-lock.json
 .env
+yarn.lock
