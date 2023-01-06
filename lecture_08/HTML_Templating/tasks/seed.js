@@ -1,47 +1,38 @@
-const dbConnection = require('../config/mongoConnection');
-const data = require('../data/');
-const users = data.users;
-const posts = data.posts;
+import {dbConnection, closeConnection} from '../config/mongoConnection.js';
+import users from '../data/users.js';
+import posts from '../data/posts.js';
 
-async function main() {
-  const db = await dbConnection();
+const db = await dbConnection();
+await db.dropDatabase();
 
-  await db.dropDatabase();
+const patrick = await users.addUser('Patrick', 'Hill');
+const pid = patrick._id.toString();
+const aiden = await users.addUser('Aiden', 'Hill');
+const aid = aiden._id.toString();
+await posts.addPost('Hello, class!', 'Today we are creating a blog!', pid);
+await posts.addPost(
+  'Using the seed',
+  'We use the seed to have some initial data so we can just focus on servers this week',
+  pid
+);
 
-  const patrick = await users.addUser('Patrick', 'Hill');
-  const id = patrick._id;
+await posts.addPost(
+  'Using routes',
+  'The purpose of today is to simply look at some GET routes',
+  pid
+);
 
-  await posts.addPost('Hello, class!', 'Today we are creating a blog!', [], id);
+await posts.addPost("Aiden's first post", "This is aiden's first post", aid, [
+  'toys',
+]);
+await posts.addPost("Aiden's second post", "This is aiden's second post", aid, [
+  'aiden',
+]);
+await posts.addPost("Aiden's third post", "This is aiden's thrid post", aid, [
+  'aiden',
+  'kid',
+]);
 
-  await posts.addPost(
-    'Using the seed',
-    'We use the seed to have some initial data so we can just focus on servers this week',
-    [],
-    id
-  );
-  await posts.addPost(
-    'Using routes',
-    'The purpose of today is to simply look at some GET routes',
-    [],
-    id
-  );
+console.log('Done seeding database');
 
-  const aiden = await users.addUser('Aiden', 'Hill');
-  await posts.addPost(
-    "Aiden's First Post",
-    "I'm 6 months old, I can't blog1",
-    [],
-    aiden._id
-  );
-  await posts.addPost(
-    "Aiden's Second Post",
-    "I'm still 6 months old, I told you already, I can't blog1",
-    [],
-    aiden._id
-  );
-  console.log('Done seeding database');
-}
-
-main().catch((error) => {
-  console.error(error);
-});
+await closeConnection();

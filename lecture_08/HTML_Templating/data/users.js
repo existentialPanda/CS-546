@@ -1,92 +1,94 @@
-const mongoCollections = require('../config/mongoCollections');
-const users = mongoCollections.users;
-const uuid = require('uuid');
+import {users} from '../config/mongoCollections.js';
+import {ObjectId} from 'mongodb';
+import validation from '../validation.js';
+
+const userCollection = await users();
 
 let exportedMethods = {
   async getAllUsers() {
-    const userCollection = await users();
     const userList = await userCollection.find({}).toArray();
-    if (!userList) throw 'No users in system!';
     return userList;
   },
-  // This is a fun new syntax that was brought forth in ES6, where we can define
-  // methods on an object with this shorthand!
   async getUserById(id) {
-    const userCollection = await users();
-    const user = await userCollection.findOne({_id: id});
-    if (!user) throw 'User not found';
+    id = validation.checkId(id);
+    const user = await userCollection.findOne({_id: ObjectId(id)});
+    if (!user) throw 'Error: User not found';
     return user;
   },
   async addUser(firstName, lastName) {
-    const userCollection = await users();
+    firstName = validation.checkString(firstName, 'First name');
+    lastName = validation.checkString(lastName, 'Last name');
 
     let newUser = {
       firstName: firstName,
       lastName: lastName,
-      _id: uuid.v4(),
-      posts: [],
     };
 
     const newInsertInformation = await userCollection.insertOne(newUser);
-    if (newInsertInformation.insertedCount === 0) throw 'Insert failed!';
-    return await this.getUserById(newInsertInformation.insertedId);
+    if (!newInsertInformation.insertedId) throw 'Insert failed!';
+    return await this.getUserById(newInsertInformation.insertedId.toString());
   },
   async removeUser(id) {
-    const userCollection = await users();
-    const deletionInfo = await userCollection.removeOne({_id: id});
-    if (deletionInfo.deletedCount === 0) {
-      throw `Could not delete user with id of ${id}`;
-    }
-    return true;
-  },
-  async updateUser(id, updatedUser) {
-    const user = await this.getUserById(id);
-    console.log(user);
+    id = validation.checkId(id);
+    const deletionInfo = await userCollection.findOneAndDelete({
+      _id: ObjectId(id),
+    });
+    if (deletionInfo.lastErrorObject.n === 0)
+      throw [404, `Error: Could not delete user with id of ${id}`];
 
-    let userUpdateInfo = {
-      firstName: updatedUser.firstName,
-      lastName: updatedUser.lastName,
+    return {...deletionInfo.value, deleted: true};
+  },
+  async updateUserPut(id, firstName, lastName) {
+    id = validation.checkId(id);
+    firstName = validation.checkString(firstName, 'first name');
+    lastName = validation.checkString(lastName, 'last name');
+
+    const userUpdateInfo = {
+      firstName: firstName,
+      lastName: lastName,
     };
 
-    const userCollection = await users();
-    const updateInfo = await userCollection.updateOne(
-      {_id: id},
-      {$set: userUpdateInfo}
+    const updateInfo = await userCollection.findOneAndUpdate(
+      {_id: ObjectId(id)},
+      {$set: userUpdateInfo},
+      {returnDocument: 'after'}
     );
-    if (!updateInfo.matchedCount && !updateInfo.modifiedCount)
-      throw 'Update failed';
+    if (updateInfo.lastErrorObject.n === 0)
+      throw [
+        404,
+        `Error: Update failed, could not find a user with id of ${id}`,
+      ];
 
-    return await this.getUserById(id);
+    return await updateInfo.value;
   },
-  async addPostToUser(userId, postId, postTitle) {
-    let currentUser = await this.getUserById(userId);
-    console.log(currentUser);
 
-    const userCollection = await users();
-    const updateInfo = await userCollection.updateOne(
-      {_id: userId},
-      {$addToSet: {posts: {id: postId, title: postTitle}}}
+  async updateUserPatch(id, userInfo) {
+    id = validation.checkId(id);
+    if (userInfo.firstName)
+      userInfo.firstName = validation.checkString(
+        userInfo.firstName,
+        'first name'
+      );
+
+    if (userInfo.lastName)
+      userInfo.lastName = validation.checkString(
+        userInfo.lastName,
+        'last name'
+      );
+
+    const updateInfo = await userCollection.findOneAndUpdate(
+      {_id: ObjectId(id)},
+      {$set: userInfo},
+      {returnDocument: 'after'}
     );
+    if (updateInfo.lastErrorObject.n === 0)
+      throw [
+        404,
+        `Error: Update failed, could not find a user with id of ${id}`,
+      ];
 
-    if (!updateInfo.matchedCount && !updateInfo.modifiedCount)
-      throw 'Update failed';
-
-    return await this.getUserById(userId);
-  },
-  async removePostFromUser(userId, postId) {
-    let currentUser = await this.getUserById(userId);
-    console.log(currentUser);
-
-    const userCollection = await users();
-    const updateInfo = await userCollection.updateOne(
-      {_id: userId},
-      {$pull: {posts: {id: postId}}}
-    );
-    if (!updateInfo.matchedCount && !updateInfo.modifiedCount)
-      throw 'Update failed';
-
-    return await this.getUserById(userId);
+    return await updateInfo.value;
   },
 };
 
-module.exports = exportedMethods;
+export default exportedMethods;

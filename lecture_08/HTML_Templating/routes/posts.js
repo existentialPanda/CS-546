@@ -1,104 +1,209 @@
-const express = require('express');
-const router = express.Router();
-const data = require('../data');
-const postData = data.posts;
-const userData = data.users;
+import {Router} from 'express';
+const router = Router();
+import {postData, userData} from '../data/index.js';
+import validation from '../validation.js';
 
-router.get('/new', async (req, res) => {
+router.route('/new').get(async (req, res) => {
   const users = await userData.getAllUsers();
   res.render('posts/new', {users: users});
 });
+router
+  .route('/')
+  .get(async (req, res) => {
+    try {
+      const postList = await postData.getAllPosts();
+      res.render('posts/index', {posts: postList});
+    } catch (e) {
+      res.status(500).json({error: e});
+    }
+  })
+  .post(async (req, res) => {
+    const blogPostData = req.body;
+    let errors = [];
+    try {
+      blogPostData.title = validation.checkString(blogPostData.title, 'Title');
+    } catch (e) {
+      errors.push(e);
+    }
 
-router.get('/:id', async (req, res) => {
+    try {
+      blogPostData.body = validation.checkString(blogPostData.body, 'Body');
+    } catch (e) {
+      errors.push(e);
+    }
+
+    try {
+      blogPostData.posterId = validation.checkId(
+        blogPostData.posterId,
+        'Poster ID'
+      );
+    } catch (e) {
+      errors.push(e);
+    }
+
+    if (blogPostData.tags) {
+      let tags = blogPostData.tags.split(',');
+      try {
+        blogPostData.tags = validation.checkStringArray(tags, 'Tags');
+      } catch (e) {
+        errors.push(e);
+      }
+    }
+
+    if (errors.length > 0) {
+      const users = await userData.getAllUsers();
+      res.render('posts/new', {
+        errors: errors,
+        hasErrors: true,
+        post: blogPostData,
+        users: users,
+      });
+      return;
+    }
+
+    try {
+      const {title, body, tags, posterId} = blogPostData;
+      const newPost = await postData.addPost(title, body, posterId, tags);
+      res.redirect(`/posts/${newPost._id}`);
+    } catch (e) {
+      res.status(500).json({error: e});
+    }
+  });
+
+router
+  .route('/:id')
+  .get(async (req, res) => {
+    try {
+      req.params.id = validation.checkId(req.params.id, 'Id URL Param');
+    } catch (e) {
+      return res.status(400).json({error: e});
+    }
+    try {
+      const post = await postData.getPostById(req.params.id);
+      res.render('posts/single', {post: post});
+    } catch (e) {
+      res.status(404).json({error: e});
+    }
+  })
+  .put(async (req, res) => {
+    const updatedData = req.body;
+    try {
+      req.params.id = validation.checkId(req.params.id, 'ID url param');
+      updatedData.title = validation.checkString(updatedData.title, 'Title');
+      updatedData.body = validation.checkString(updatedData.body, 'Body');
+      updatedData.posterId = validation.checkId(
+        updatedData.posterId,
+        'Poster ID'
+      );
+      if (updatedData.tags) {
+        if (!Array.isArray(updatedData.tags)) {
+          updatedData.tags = [];
+        } else {
+          updatedData.tags = validation.checkStringArray(
+            updatedData.tags,
+            'Tags'
+          );
+        }
+      }
+    } catch (e) {
+      return res.status(400).json({error: e});
+    }
+
+    try {
+      const updatedPost = await postData.updatePostPut(
+        req.params.id,
+        updatedData
+      );
+      res.json(updatedPost);
+    } catch (e) {
+      let status = e[0];
+      let message = e[1];
+      res.status(status).json({error: message});
+    }
+  })
+  .patch(async (req, res) => {
+    const requestBody = req.body;
+    try {
+      req.params.id = validation.checkId(req.params.id, 'Post ID');
+      if (requestBody.title)
+        requestBody.title = validation.checkString(requestBody.title, 'Title');
+      if (requestBody.body)
+        requestBody.body = validation.checkString(requestBody.body, 'Body');
+      if (requestBody.posterId)
+        requestBody.posterId = validation.checkId(
+          requestBody.posterId,
+          'Poster ID'
+        );
+      if (requestBody.tags)
+        requestBody.tags = validation.checkStringArray(
+          requestBody.tags,
+          'Tags'
+        );
+    } catch (e) {
+      return res.status(400).json({error: e});
+    }
+
+    try {
+      const updatedPost = await postData.updatePostPatch(
+        req.params.id,
+        requestBody
+      );
+      res.json(updatedPost);
+    } catch (e) {
+      let status = e[0];
+      let message = e[1];
+      res.status(status).json({error: message});
+    }
+  })
+  .delete(async (req, res) => {
+    try {
+      req.params.id = validation.checkId(req.params.id, 'Id URL Param');
+    } catch (e) {
+      return res.status(400).json({error: e});
+    }
+    try {
+      let deletedPost = await postData.removePost(req.params.id);
+      res.status(200).json(deletedPost);
+    } catch (e) {
+      let status = e[0];
+      let message = e[1];
+      res.status(status).json({error: message});
+    }
+  });
+
+router.route('/tag/:tag').get(async (req, res) => {
   try {
-    const post = await postData.getPostById(req.params.id);
-    res.render('posts/single', {post: post});
+    req.params.tag = validation.checkString(req.params.tag, 'Tag');
   } catch (e) {
-    res.status(500).json({error: e});
+    return res.status(400).json({error: e});
+  }
+  try {
+    const postList = await postData.getPostsByTag(req.params.tag);
+    res.render('posts/index', {posts: postList});
+  } catch (e) {
+    res.status(400).json({error: e});
   }
 });
 
-router.get('/tag/:tag', async (req, res) => {
-  const postList = await postData.getPostsByTag(req.params.tag);
-  res.render('posts/index', {posts: postList});
-});
-
-router.get('/', async (req, res) => {
-  const postList = await postData.getAllPosts();
-  res.render('posts/index', {posts: postList});
-});
-
-router.post('/', async (req, res) => {
-  let blogPostData = req.body;
-  let errors = [];
-
-  if (!blogPostData.title) {
-    errors.push('No title provided');
-  }
-
-  if (!blogPostData.body) {
-    errors.push('No body provided');
-  }
-
-  if (!blogPostData.posterId) {
-    errors.push('No poster selected');
-  }
-
-  if (errors.length > 0) {
-    const users = await userData.getAllUsers();
-    res.render('posts/new', {
-      errors: errors,
-      hasErrors: true,
-      post: blogPostData,
-      users: users,
-    });
-    return;
+router.route('/tag/rename').patch(async (req, res) => {
+  try {
+    req.body.oldTag = validation.checkString(req.body.oldTag, 'Old Tag');
+    req.body.newTag = validation.checkString(req.body.newTag, 'New Tag');
+  } catch (e) {
+    res.status(400).json({error: e});
   }
 
   try {
-    const newPost = await postData.addPost(
-      blogPostData.title,
-      blogPostData.body,
-      blogPostData.tags || [],
-      blogPostData.posterId
+    let getNewTagPosts = await postData.renameTag(
+      req.body.oldTag,
+      req.body.newTag
     );
-
-    res.redirect(`/posts/${newPost._id}`);
+    res.json(getNewTagPosts);
   } catch (e) {
-    res.status(500).json({error: e});
+    let status = e[0];
+    let message = e[1];
+    res.status(status).json({error: message});
   }
 });
 
-router.put('/:id', async (req, res) => {
-  let updatedData = req.body;
-  try {
-    await postData.getPostById(req.params.id);
-  } catch (e) {
-    res.status(404).json({error: 'Post not found'});
-    return;
-  }
-  try {
-    const updatedPost = await postData.updatePost(req.params.id, updatedData);
-    res.json(updatedPost);
-  } catch (e) {
-    res.status(500).json({error: e});
-  }
-});
-
-router.delete('/:id', async (req, res) => {
-  try {
-    await postData.getPostById(req.params.id);
-  } catch (e) {
-    res.status(404).json({error: 'Post not found'});
-    return;
-  }
-
-  try {
-    await postData.removePost(req.params.id);
-    res.sendStatus(200);
-  } catch (e) {
-    res.status(500).json({error: e});
-  }
-});
-
-module.exports = router;
+export default router;
