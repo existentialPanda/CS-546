@@ -81,8 +81,6 @@
         const parsedFirstNumberValue = parseInt(firstNumberValue);
         console.log(typeof parsedFirstNumberValue);
         const parsedSecondNumberValue = parseInt(secondNumberValue);
-        console.log(typeof parsedSecondNumberValue);
-
         const operation = operationStringToFunction(operationValue);
 
         const result = operation(
@@ -91,6 +89,7 @@
         );
 
         resultTextElement.textContent = 'The result is ' + result;
+        console.log(`${result}`);
         resultContainer.classList.remove('hidden');
       } catch (e) {
         const message = typeof e === 'string' ? e : e.message;

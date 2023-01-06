@@ -1,10 +1,14 @@
-const express = require('express');
+import express, {static as _static, json, urlencoded} from 'express';
 const app = express();
-const static = express.static(__dirname + '/public');
-const configRoutes = require('./routes');
-const exphbs = require('express-handlebars');
+import {fileURLToPath} from 'url';
+import {dirname} from 'path';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const staticDir = _static(__dirname + '/public');
+import configRoutes from './routes/index.js';
+import {create} from 'express-handlebars';
 
-const handlebarsInstance = exphbs.create({
+const handlebarsInstance = create({
   defaultLayout: 'main',
   // Specify helpers which are only registered on this instance.
   helpers: {
@@ -13,8 +17,8 @@ const handlebarsInstance = exphbs.create({
         return new Handlebars.SafeString(JSON.stringify(obj, null, spacing));
 
       return new Handlebars.SafeString(JSON.stringify(obj));
-    }
-  }
+    },
+  },
 });
 
 const rewriteUnsupportedBrowserMethods = (req, res, next) => {
@@ -31,9 +35,9 @@ const rewriteUnsupportedBrowserMethods = (req, res, next) => {
 };
 
 app.use;
-app.use('/public', static);
-app.use(express.json());
-app.use(express.urlencoded({extended: true}));
+app.use('/public', staticDir);
+app.use(json());
+app.use(urlencoded({extended: true}));
 app.use(rewriteUnsupportedBrowserMethods);
 
 app.engine('handlebars', handlebarsInstance.engine);

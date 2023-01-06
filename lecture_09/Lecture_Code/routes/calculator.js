@@ -1,7 +1,6 @@
-const express = require('express');
-const router = express.Router();
-const data = require('../data');
-const calculator = data.calculator;
+import {Router} from 'express';
+const router = Router();
+import calculator from '../data/calculator.js';
 
 router.get('/static', (req, res) => {
   res.render('calculator/static', {});
@@ -13,10 +12,6 @@ router.get('/server', (req, res) => {
 
 router.put('/server', (req, res) => {
   res.render('calculator/server', {});
-});
-
-router.patch('/server', (req, res) => {
-  console.log('in patch route');
 });
 
 router.post('/server', (req, res) => {
@@ -60,4 +55,4 @@ router.post('/server', (req, res) => {
   });
 });
 
-module.exports = router;
+export default router;

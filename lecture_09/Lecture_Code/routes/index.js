@@ -1,4 +1,4 @@
-const calculatorRoutes = require('./calculator');
+import calculatorRoutes from './calculator.js';
 
 const constructorMethod = (app) => {
   app.use('/calculator', calculatorRoutes);
@@ -8,4 +8,4 @@ const constructorMethod = (app) => {
   });
 };
 
-module.exports = constructorMethod;
+export default constructorMethod;

@@ -28,7 +28,7 @@
       <div class="form-group">
         <button type="submit" class="btn btn-default">Submit</button>
       </div>
-      {{#if result }}
+      {{#if result includeZero=true }}
       <div class="form-group">
         <div class="alert alert-success">
           The result is: {{ result }}

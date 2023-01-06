@@ -4,7 +4,7 @@ $('#myForm').submit((event) => {
     $('#error').hide();
     $('#formLabel').removeClass('error');
     $('#text_input').removeClass('inputClass');
-    const li = `<li class='myClassOne'> ${$('#text_input').val()} </li>`;
+    const li = `<li> ${$('#text_input').val()} </li>`;
     $('#list').append(li);
     $('#myForm').trigger('reset');
     $('#text_input').focus();
@@ -14,6 +14,6 @@ $('#myForm').submit((event) => {
     $('#formLabel').addClass('error');
     $('#text_input').addClass('inputClass');
     $('#text_input').focus();
-    $('#text_input').val('');
+    $('#text_input').value = '';
   }
 });

@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
+  "type": "module",
   "scripts": {
     "seed": "node ./tasks/seed.js",
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -11,10 +12,8 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.17.1",
-    "express-handlebars": "^3.1.0",
-    "handlebars": "^4.7.6",
-    "mongodb": "^3.3.0-beta2",
-    "uuid": "^3.3.2"
+    "express": "^4.18.2",
+    "express-handlebars": "^6.0.6",
+    "mongodb": "^4.13.0"
   }
 }
