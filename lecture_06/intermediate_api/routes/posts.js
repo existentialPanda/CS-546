@@ -171,7 +171,9 @@ router.route('/tag/rename').patch(async (req, res) => {
     );
     res.json(getNewTagPosts);
   } catch (e) {
-    res.status(400).json({error: e});
+    let status = e[0];
+    let message = e[1];
+    res.status(status).json({error: message});
   }
 });
 

@@ -7,32 +7,20 @@ const postCollection = await posts();
 
 const exportedMethods = {
   async getAllPosts() {
-    try {
-      return await postCollection.find({}).toArray();
-    } catch (e) {
-      throw e;
-    }
+    return await postCollection.find({}).toArray();
   },
 
   async getPostById(id) {
     id = validation.checkId(id);
-    try {
-      const post = await postCollection.findOne({_id: ObjectId(id)});
+    const post = await postCollection.findOne({_id: ObjectId(id)});
 
-      if (!post) throw 'Error: Post not found';
+    if (!post) throw 'Error: Post not found';
 
-      return post;
-    } catch (e) {
-      throw e;
-    }
+    return post;
   },
   async getPostsByTag(tag) {
     tag = validation.checkString(tag, 'Tag');
-    try {
-      return await postCollection.find({tags: tag}).toArray();
-    } catch (e) {
-      throw e;
-    }
+    return await postCollection.find({tags: tag}).toArray();
   },
   async addPost(title, body, posterId, tags) {
     title = validation.checkString(title, 'Title');
@@ -43,38 +31,29 @@ const exportedMethods = {
     } else {
       tags = validation.checkStringArray(tags, 'Tags');
     }
-    try {
-      const userThatPosted = await userData.getUserById(posterId);
+    const userThatPosted = await userData.getUserById(posterId);
 
-      const newPost = {
-        title: title,
-        body: body,
-        poster: {
-          id: ObjectId(posterId),
-          name: `${userThatPosted.firstName} ${userThatPosted.lastName}`,
-        },
-        tags: tags,
-      };
-      const newInsertInformation = await postCollection.insertOne(newPost);
-      const newId = newInsertInformation.insertedId;
-      return await this.getPostById(newId.toString());
-    } catch (e) {
-      throw e;
-    }
+    const newPost = {
+      title: title,
+      body: body,
+      poster: {
+        id: ObjectId(posterId),
+        name: `${userThatPosted.firstName} ${userThatPosted.lastName}`,
+      },
+      tags: tags,
+    };
+    const newInsertInformation = await postCollection.insertOne(newPost);
+    const newId = newInsertInformation.insertedId;
+    return await this.getPostById(newId.toString());
   },
   async removePost(id) {
     id = validation.checkId(id);
-
-    try {
-      const deletionInfo = await postCollection.findOneAndDelete({
-        _id: ObjectId(id),
-      });
-      if (deletionInfo.lastErrorObject.n === 0)
-        throw [404, `Could not delete post with id of ${id}`];
-      return {...deletionInfo.value, deleted: true};
-    } catch (e) {
-      throw e;
-    }
+    const deletionInfo = await postCollection.findOneAndDelete({
+      _id: ObjectId(id),
+    });
+    if (deletionInfo.lastErrorObject.n === 0)
+      throw [404, `Could not delete post with id of ${id}`];
+    return {...deletionInfo.value, deleted: true};
   },
   async updatePostPut(id, updatedPost) {
     id = validation.checkId(id);
@@ -86,43 +65,39 @@ const exportedMethods = {
     } else {
       updatedPost.tags = validation.checkStringArray(updatedPost.tags, 'Tags');
     }
+    const userThatPosted = await userData.getUserById(updatedPost.posterId);
 
-    try {
-      const userThatPosted = await userData.getUserById(updatedPost.posterId);
+    let updatedPostData = {
+      title: updatedPost.title,
+      body: updatedPost.body,
+      poster: {
+        id: updatedPost.posterId,
+        firstName: userThatPosted.firstName,
+        lastName: userThatPosted.lastName,
+      },
+      tags: updatedPost.tags,
+    };
 
-      let updatedPostData = {
-        title: updatedPost.title,
-        body: updatedPost.body,
-        poster: {
-          id: updatedPost.posterId,
-          firstName: userThatPosted.firstName,
-          lastName: userThatPosted.lastName,
-        },
-        tags: updatedPost.tags,
-      };
-
-      const updateInfo = await postCollection.findOneAndReplace(
-        {_id: ObjectId(id)},
-        updatedPostData,
-        {returnDocument: 'after'}
-      );
-      if (updateInfo.lastErrorObject.n === 0)
-        throw [
-          404,
-          `Error: Update failed! Could not update post with id ${id}`,
-        ];
-      return updateInfo.value;
-    } catch (e) {
-      throw e;
-    }
+    const updateInfo = await postCollection.findOneAndReplace(
+      {_id: ObjectId(id)},
+      updatedPostData,
+      {returnDocument: 'after'}
+    );
+    if (updateInfo.lastErrorObject.n === 0)
+      throw [404, `Error: Update failed! Could not update post with id ${id}`];
+    return updateInfo.value;
   },
   async updatePostPatch(id, updatedPost) {
     const updatedPostData = {};
     if (updatedPost.posterId) {
-      updatedPostData.posterId = validation.checkId(
+      updatedPostData['poster.id'] = validation.checkId(
         updatedPost.posterId,
         'Poster ID'
       );
+
+      const userThatPosted = await userData.getUserById(updatedPost.posterId);
+      updatedPostData['poster.firstName'] = userThatPosted.firstName;
+      updatedPostData['poster.lastName'] = userThatPosted.lastName;
     }
     if (updatedPost.tags) {
       updatedPostData.tags = validation.checkStringArray(
@@ -141,19 +116,15 @@ const exportedMethods = {
     if (updatedPost.body) {
       updatedPostData.body = validation.checkString(updatedPost.body, 'Body');
     }
-    try {
-      let newPost = await postCollection.findOneAndUpdate(
-        {_id: ObjectId(id)},
-        {$set: updatedPostData},
-        {returnDocument: 'after'}
-      );
-      if (newPost.lastErrorObject.n === 0)
-        throw [404, `Could not update the post with id ${id}`];
+    let newPost = await postCollection.findOneAndUpdate(
+      {_id: ObjectId(id)},
+      {$set: updatedPostData},
+      {returnDocument: 'after'}
+    );
+    if (newPost.lastErrorObject.n === 0)
+      throw [404, `Could not update the post with id ${id}`];
 
-      return newPost.value;
-    } catch (e) {
-      throw e;
-    }
+    return newPost.value;
   },
   async renameTag(oldTag, newTag) {
     oldTag = validation.checkString(oldTag, 'Old Tag');
@@ -171,22 +142,15 @@ const exportedMethods = {
       $pull: {tags: oldTag},
     };
 
-    try {
-      let updateOne = await postCollection.updateMany(
-        findDocuments,
-        firstUpdate
-      );
-      if (updateOne.matchedCount === 0)
-        throw 'Could not find any posts with that old tag';
-      let updateTwo = await postCollection.updateMany(
-        findDocuments,
-        secondUpdate
-      );
-      if (updateTwo.modifiedCount === 0) throw 'Could not update tags';
-      return await this.getPostsByTag(newTag);
-    } catch (e) {
-      throw e;
-    }
+    let updateOne = await postCollection.updateMany(findDocuments, firstUpdate);
+    if (updateOne.matchedCount === 0)
+      throw [404, `Could not find any posts with old tag: ${oldTag}`];
+    let updateTwo = await postCollection.updateMany(
+      findDocuments,
+      secondUpdate
+    );
+    if (updateTwo.modifiedCount === 0) throw [500, 'Could not update tags'];
+    return await this.getPostsByTag(newTag);
   },
 };
 
