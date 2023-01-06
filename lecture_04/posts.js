@@ -1,7 +1,8 @@
 import {posts} from './mongoCollections.js';
-
 import dogData from './dogs.js';
 import {ObjectId} from 'mongodb';
+
+const postCollection = await posts();
 
 const exportedMethods = {
   async getPostById(id) {
@@ -12,7 +13,6 @@ const exportedMethods = {
     id = id.trim();
     if (!ObjectId.isValid(id)) throw 'invalid object ID';
 
-    const postCollection = await posts();
     const post = await postCollection.findOne({_id: ObjectId(id)});
     if (!post) throw 'No post with that id';
 
@@ -20,7 +20,6 @@ const exportedMethods = {
   },
 
   async getAllPosts() {
-    const postCollection = await posts();
     const postList = await postCollection.find({}).toArray();
     if (!postList) throw 'Could not get all posts';
     return postList;
@@ -43,7 +42,6 @@ const exportedMethods = {
     body = body.trim();
     posterId = posterId.trim();
 
-    const postCollection = await posts();
     const dogThatPosted = await dogData.getDogById(posterId);
 
     const newPostInfo = {
@@ -71,10 +69,11 @@ const exportedMethods = {
     id = id.trim();
     if (!ObjectId.isValid(id)) throw 'invalid object ID';
 
-    const postCollection = await posts();
-    const deletionInfo = await postCollection.deleteOne({_id: ObjectId(id)});
+    const deletionInfo = await postCollection.findOneAndDelete({
+      _id: ObjectId(id),
+    });
 
-    if (deletionInfo.deletedCount === 0) {
+    if (deletionInfo.lastErrorObject.n === 0) {
       throw `Could not delete post with id of ${id}`;
     }
     return {deleted: true};
@@ -103,7 +102,6 @@ const exportedMethods = {
     body = body.trim();
     posterId = posterId.trim();
 
-    const postCollection = await posts();
     const dogThatPosted = await dogData.getDogById(posterId);
 
     let updatedPost = {
@@ -115,12 +113,12 @@ const exportedMethods = {
       },
     };
 
-    const updatedInfo = await postCollection.replaceOne(
+    const updatedInfo = await postCollection.findOneAndReplace(
       {_id: ObjectId(id)},
       updatedPost
     );
 
-    if (updatedInfo.modifiedCount === 0) {
+    if (updatedInfo.lastErrorObject.n === 0) {
       throw 'could not update post successfully';
     }
 

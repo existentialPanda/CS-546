@@ -1,17 +1,16 @@
 import {users} from '../config/mongoCollections.js';
-
 import {ObjectId} from 'mongodb';
 import validation from '../validation.js';
 
+const userCollection = await users();
+
 let exportedMethods = {
   async getAllUsers() {
-    const userCollection = await users();
     const userList = await userCollection.find({}).toArray();
     return userList;
   },
   async getUserById(id) {
     id = validation.checkId(id);
-    const userCollection = await users();
     const user = await userCollection.findOne({_id: ObjectId(id)});
     if (!user) throw 'Error: User not found';
     return user;
@@ -19,8 +18,6 @@ let exportedMethods = {
   async addUser(firstName, lastName) {
     firstName = validation.checkString(firstName, 'First name');
     lastName = validation.checkString(lastName, 'Last name');
-
-    const userCollection = await users();
 
     let newUser = {
       firstName: firstName,
@@ -33,32 +30,62 @@ let exportedMethods = {
   },
   async removeUser(id) {
     id = validation.checkId(id);
-    const userCollection = await users();
     const deletionInfo = await userCollection.findOneAndDelete({
       _id: ObjectId(id),
     });
-    if (!deletionInfo.value)
-      throw `Error: Could not delete user with id of ${id}`;
+    if (deletionInfo.lastErrorObject.n === 0)
+      throw [404, `Error: Could not delete user with id of ${id}`];
 
     return {...deletionInfo.value, deleted: true};
   },
-  async updateUser(id, firstName, lastName) {
+  async updateUserPut(id, firstName, lastName) {
     id = validation.checkId(id);
-    firstName = checkString(firstName, 'first name');
-    lastName = checkString(lastName, 'last name');
+    firstName = validation.checkString(firstName, 'first name');
+    lastName = validation.checkString(lastName, 'last name');
 
     const userUpdateInfo = {
       firstName: firstName,
       lastName: lastName,
     };
 
-    const userCollection = await users();
     const updateInfo = await userCollection.findOneAndUpdate(
       {_id: ObjectId(id)},
       {$set: userUpdateInfo},
       {returnDocument: 'after'}
     );
-    if (!updateInfo.value) throw 'Error: Update failed';
+    if (updateInfo.lastErrorObject.n === 0)
+      throw [
+        404,
+        `Error: Update failed, could not find a user with id of ${id}`,
+      ];
+
+    return await updateInfo.value;
+  },
+
+  async updateUserPatch(id, userInfo) {
+    id = validation.checkId(id);
+    if (userInfo.firstName)
+      userInfo.firstName = validation.checkString(
+        userInfo.firstName,
+        'first name'
+      );
+
+    if (userInfo.lastName)
+      userInfo.lastName = validation.checkString(
+        userInfo.lastName,
+        'last name'
+      );
+
+    const updateInfo = await userCollection.findOneAndUpdate(
+      {_id: ObjectId(id)},
+      {$set: userInfo},
+      {returnDocument: 'after'}
+    );
+    if (updateInfo.lastErrorObject.n === 0)
+      throw [
+        404,
+        `Error: Update failed, could not find a user with id of ${id}`,
+      ];
 
     return await updateInfo.value;
   },

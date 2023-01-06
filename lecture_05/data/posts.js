@@ -3,14 +3,14 @@ import userData from './users.js';
 import {ObjectId} from 'mongodb';
 import validation from './validation.js';
 
+const postCollection = await posts();
+
 const exportedMethods = {
   async getAllPosts() {
-    const postCollection = await posts();
     return await postCollection.find({}).toArray();
   },
   async getPostById(id) {
     id = validation.checkId(id);
-    const postCollection = await posts();
     const post = await postCollection.findOne({_id: ObjectId(id)});
 
     if (!post) throw 'Error: Post not found';
@@ -21,7 +21,6 @@ const exportedMethods = {
     body = validation.checkString(body, 'body');
     posterId = validation.checkId(posterId);
 
-    const postCollection = await posts();
     const userThatPosted = await userData.getUserById(posterId);
 
     let newPost = {
@@ -40,11 +39,11 @@ const exportedMethods = {
   },
   async removePost(id) {
     id = validation.checkId(id);
-    const postCollection = await posts();
     const deletionInfo = await postCollection.findOneAndDelete({
       _id: ObjectId(id),
     });
-    if (!deletionInfo.value) throw `Could not delete post with id of ${id}`;
+    if (deletionInfo.lastErrorObject.n === 0)
+      throw `Could not delete post with id of ${id}`;
     return {...deletionInfo.value, deleted: true};
   },
   async updatePost(id, title, body, posterId) {
@@ -52,7 +51,6 @@ const exportedMethods = {
     title = validation.checkString(title, 'title');
     body = validation.checkString(body, 'body');
     posterId = validation.checkId(posterId);
-    const postCollection = await posts();
     const userThatPosted = await userData.getUserById(posterId);
 
     let updatedPost = {
@@ -69,7 +67,7 @@ const exportedMethods = {
       {$set: updatedPost},
       {returnDocument: 'after'}
     );
-    if (!updateInfo.value) throw 'Error: Update failed';
+    if (updateInfo.lastErrorObject.n === 0) throw 'Error: Update failed';
     return updateInfo.value;
   },
 };

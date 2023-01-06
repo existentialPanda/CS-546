@@ -25,18 +25,15 @@ const exportedMethods = {
   checkStringArray(arr, varName) {
     //We will allow an empty array for this,
     //if it's not empty, we will make sure all tags are strings
-    let arrayInvalidFlag = false;
     if (!arr || !Array.isArray(arr))
       throw `You must provide an array of ${varName}`;
-    for (i in arr) {
+    for (let i in arr) {
       if (typeof arr[i] !== 'string' || arr[i].trim().length === 0) {
-        arrayInvalidFlag = true;
-        break;
+        throw `One or more elements in ${varName} array is not a string or is an empty string`;
       }
       arr[i] = arr[i].trim();
     }
-    if (arrayInvalidFlag)
-      throw `One or more elements in ${varName} array is not a string or is an empty string`;
+
     return arr;
   },
 };

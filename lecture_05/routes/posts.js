@@ -8,16 +8,20 @@ router
     try {
       req.params.id = validation.checkId(req.params.id);
       const post = await postData.getPostById(req.params.id);
-      res.json(post);
+      return res.json(post);
     } catch (e) {
       res.status(404).json(e);
     }
   })
   .post(async (req, res) => {
-    res.send(`POST request to http://localhost:3000/posts/${req.params.id}`);
+    return res.send(
+      `POST request to http://localhost:3000/posts/${req.params.id}`
+    );
   })
   .delete(async (req, res) => {
-    res.send(`DELETE request to http://localhost:3000/posts/${req.params.id}`);
+    return res.send(
+      `DELETE request to http://localhost:3000/posts/${req.params.id}`
+    );
   });
 
 router
@@ -25,16 +29,16 @@ router
   .get(async (req, res) => {
     try {
       const postList = await postData.getAllPosts();
-      res.json(postList);
+      return res.json(postList);
     } catch (e) {
       res.status(500).send(e);
     }
   })
   .post(async (req, res) => {
-    res.send('POST request to http://localhost:3000/posts');
+    return res.send('POST request to http://localhost:3000/posts');
   })
   .delete(async (req, res) => {
-    res.send('DELETE request to http://localhost:3000/posts');
+    return res.send('DELETE request to http://localhost:3000/posts');
   });
 
 export default router;

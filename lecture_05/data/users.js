@@ -1,17 +1,16 @@
 import {users} from '../config/mongoCollections.js';
-
 import {ObjectId} from 'mongodb';
 import validation from './validation.js';
 
+const userCollection = await users();
+
 let exportedMethods = {
   async getAllUsers() {
-    const userCollection = await users();
     const userList = await userCollection.find({}).toArray();
     return userList;
   },
   async getUserById(id) {
     id = validation.checkId(id);
-    const userCollection = await users();
     const user = await userCollection.findOne({_id: ObjectId(id)});
     if (!user) throw 'Error: User not found';
     return user;
@@ -19,8 +18,6 @@ let exportedMethods = {
   async addUser(firstName, lastName) {
     firstName = validation.checkString(firstName, 'First name');
     lastName = validation.checkString(lastName, 'Last name');
-
-    const userCollection = await users();
 
     let newUser = {
       firstName: firstName,
@@ -33,11 +30,10 @@ let exportedMethods = {
   },
   async removeUser(id) {
     id = validation.checkId(id);
-    const userCollection = await users();
     const deletionInfo = await userCollection.findOneAndDelete({
       _id: ObjectId(id),
     });
-    if (!deletionInfo.value)
+    if (deletionInfo.lastErrorObject.n === 0)
       throw `Error: Could not delete user with id of ${id}`;
 
     return {...deletionInfo.value, deleted: true};
@@ -52,13 +48,12 @@ let exportedMethods = {
       lastName: lastName,
     };
 
-    const userCollection = await users();
     const updateInfo = await userCollection.findOneAndUpdate(
       {_id: ObjectId(id)},
       {$set: userUpdateInfo},
       {returnDocument: 'after'}
     );
-    if (!updateInfo.value) throw 'Error: Update failed';
+    if (updateInfo.lastErrorObject.n === 0) throw 'Error: Update failed';
 
     return await updateInfo.value;
   },
