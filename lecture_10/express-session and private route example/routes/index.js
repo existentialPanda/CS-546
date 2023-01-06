@@ -1,6 +1,6 @@
-const postRoutes = require('./posts');
-const userRoutes = require('./users');
-const privateRoutes = require('./private');
+import postRoutes from './posts.js';
+import userRoutes from './users.js';
+import privateRoutes from './private.js';
 
 const constructorMethod = (app) => {
   app.use('/', userRoutes);
@@ -12,4 +12,4 @@ const constructorMethod = (app) => {
   });
 };
 
-module.exports = constructorMethod;
+export {constructorMethod};

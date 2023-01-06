@@ -1,11 +1,15 @@
-const express = require('express');
-const router = express.Router();
+import {Router} from 'express';
+const router = Router();
 
 router.get('/:id', async (req, res) => {
   res.json({route: `/posts/${req.params.id}`, method: req.method});
 });
 
 router.get('/', async (req, res) => {
+  res.json({route: '/posts', method: req.method});
+});
+
+router.put('/', async (req, res) => {
   res.json({route: '/posts', method: req.method});
 });
 
@@ -25,4 +29,4 @@ router.delete('/:id', async (req, res) => {
   res.json({route: `/posts/${req.params.id}`, method: req.method});
 });
 
-module.exports = router;
+export default router;

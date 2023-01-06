@@ -1,7 +1,7 @@
-const express = require('express');
+import express from 'express';
 const app = express();
-const session = require('express-session');
-const configRoutes = require('./routes');
+import session from 'express-session';
+import {constructorMethod} from './routes/index.js';
 
 app.use(express.json());
 
@@ -34,7 +34,7 @@ app.use('/login', (req, res, next) => {
   }
 });
 
-configRoutes(app);
+constructorMethod(app);
 
 app.listen(3000, () => {
   console.log("We've now got a server!");

@@ -1,7 +1,7 @@
-const express = require('express');
+import express from 'express';
 const app = express();
-const cookieParser = require('cookie-parser');
-const configRoutes = require('./routes');
+import cookieParser from 'cookie-parser';
+import {constructorMethod} from './routes/index.js';
 app.use(cookieParser());
 
 app.use(express.json());
@@ -125,7 +125,7 @@ app.use(async (req, res, next) => {
   next();
 });
 
-configRoutes(app);
+constructorMethod(app);
 
 app.listen(3000, () => {
   console.log("We've now got a server!");

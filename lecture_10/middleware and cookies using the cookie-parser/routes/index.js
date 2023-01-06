@@ -1,6 +1,6 @@
-const postRoutes = require('./posts');
-const userRoutes = require('./users');
-const adminRoutes = require('./admin');
+import postRoutes from './posts.js';
+import userRoutes from './users.js';
+import adminRoutes from './admin.js';
 
 const constructorMethod = (app) => {
   app.use('/posts', postRoutes);
@@ -12,4 +12,4 @@ const constructorMethod = (app) => {
   });
 };
 
-module.exports = constructorMethod;
+export {constructorMethod};

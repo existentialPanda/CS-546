@@ -1,5 +1,5 @@
-const express = require('express');
-const router = express.Router();
+import {Router} from 'express';
+const router = Router();
 
 router.get('/', async (req, res) => {
   console.log("I'm in the admin route");
@@ -11,4 +11,4 @@ router.get('/dashboard', async (req, res) => {
   res.json({route: '/admin/dashboard', method: req.method});
 });
 
-module.exports = router;
+export default router;

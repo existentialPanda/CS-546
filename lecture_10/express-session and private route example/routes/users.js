@@ -1,6 +1,6 @@
-const express = require('express');
-const router = express.Router();
-const bcrypt = require('bcryptjs');
+import {Router} from 'express';
+const router = Router();
+import bcrypt from 'bcryptjs';
 
 router.get('/', async (req, res) => {
   res.json({route: '/users', method: req.method});
@@ -27,4 +27,4 @@ router.get('/logout', async (req, res) => {
   res.send('Logged out');
 });
 
-module.exports = router;
+export default router;
