@@ -15,20 +15,19 @@
   };
   //Make AJAX Call
   $.ajax(requestConfig).then(function (responseMessage) {
-    let newElement = $(responseMessage);
     //Now we are going to loop through the data, creating each element group for each todo in the data
+    //Pay attention, when I'm building the html elements, I check the notDone field and display a different
+    //element depending on if the todo is done or not
     responseMessage.map((todoItem) => {
-      let element = `<div class="row" class="todo-item"><div class="col-sm-12 col-md-8"><h3>${todoItem.title}</h3><p>${todoItem.task}</p>`;
-      //If the todo is not done, display the link to mark it complete, if it's done, show that it's done
-      if (todoItem.notDone)
-        element = $(
-          `${element}<a class="finishItem" data-id="${todoItem.id}">Finish</a></div></div>`
-        );
-      else {
-        element = $(
-          `${element}<em>This task has been completed</em></div></div>`
-        );
-      }
+      let element = $(
+        `<div class="row" class="todo-item"><div class="col-sm-12 col-md-8"><h3>${
+          todoItem.title
+        }</h3><p>${todoItem.task}</p>${
+          todoItem.notDone
+            ? `<a class="finishItem" data-id="${todoItem.id}">Finish</a></div></div>`
+            : '<em>This task has been completed</em></div></div>'
+        }`
+      );
       //bind the todo link for the click event
       bindEventsToTodoItem(element);
       //append the todo to the page
@@ -85,15 +84,9 @@
       $.ajax(requestConfig).then(function (responseMessage) {
         console.log(responseMessage);
 
-        let element =
-          $(`<div class="row" class="todo-item"><div class="col-sm-12 col-md-8"><h3>${
-            responseMessage.todo.title
-          }</h3><p>${responseMessage.todo.task}</p>
-        ${
-          responseMessage.todo.notDone
-            ? `<a class="finishItem" data-id="${responseMessage.todo.id}">Finish</a></div></div>`
-            : '<em>This task has been completed</em></div></div>'
-        }`);
+        let element = $(
+          `<div class="row" class="todo-item"><div class="col-sm-12 col-md-8"><h3>${responseMessage.todo.title}</h3><p>${responseMessage.todo.task}</p><a class="finishItem" data-id="${responseMessage.todo.id}">Finish</a></div></div>`
+        );
         bindEventsToTodoItem(element);
         todoArea.append(element);
         newNameInput.val('');
