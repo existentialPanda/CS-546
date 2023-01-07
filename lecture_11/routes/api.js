@@ -7,7 +7,7 @@ import xss from 'xss';
 router.route('/json').get(async (req, res) => {
   res.render('home_json', {
     pageTitle: 'So Much ToDo!',
-    h1title: 'Using Routes That Return JSON',
+    h3title: 'Using Routes That Return JSON',
     partial: 'json_script',
   });
 });
@@ -15,7 +15,7 @@ router.route('/json').get(async (req, res) => {
 router.route('/html').get(async (req, res) => {
   res.render('home_html', {
     pageTitle: 'So Much ToDo!',
-    h1title: 'Using Routes That Return HTML',
+    h3title: 'Using Routes That Return HTML',
     todoItems: getAll(),
     partial: 'html_script',
   });
