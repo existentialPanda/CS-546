@@ -15,6 +15,11 @@ router
   })
   .post(async (req, res) => {
     let userInfo = req.body;
+    if (!userInfo || Object.keys(userInfo).length === 0) {
+      return res
+        .status(400)
+        .json({error: 'There are no fields in the request body'});
+    }
 
     try {
       userInfo.firstName = validation.checkString(
@@ -57,6 +62,11 @@ router
   })
   .put(async (req, res) => {
     let userInfo = req.body;
+    if (!userInfo || Object.keys(userInfo).length === 0) {
+      return res
+        .status(400)
+        .json({error: 'There are no fields in the request body'});
+    }
     try {
       req.params.id = validation.checkId(req.params.id);
       userInfo.firstName = validation.checkString(
@@ -79,13 +89,18 @@ router
       );
       res.json(updatedUser);
     } catch (e) {
-      let status = e[0];
-      let message = e[1];
+      let status = e[0] ? e[0] : 500;
+      let message = e[1] ? e[1] : 'Internal Server Error';
       res.status(status).send({error: message});
     }
   })
   .patch(async (req, res) => {
     let userInfo = req.body;
+    if (!userInfo || Object.keys(userInfo).length === 0) {
+      return res
+        .status(400)
+        .json({error: 'There are no fields in the request body'});
+    }
     try {
       req.params.id = validation.checkId(req.params.id);
       if (userInfo.firstName) {
@@ -112,8 +127,8 @@ router
       );
       res.json(updatedUser);
     } catch (e) {
-      let status = e[0];
-      let message = e[1];
+      let status = e[0] ? e[0] : 500;
+      let message = e[1] ? e[1] : 'Internal Server Error';
       res.status(status).send({error: message});
     }
   })
@@ -128,8 +143,8 @@ router
       let deletedUser = await userData.removeUser(req.params.id);
       res.json(deletedUser);
     } catch (e) {
-      let status = e[0];
-      let message = e[1];
+      let status = e[0] ? e[0] : 500;
+      let message = e[1] ? e[1] : 'Internal Server Error';
       res.status(status).send({error: message});
     }
   });

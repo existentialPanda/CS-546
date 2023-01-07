@@ -15,6 +15,11 @@ router
   })
   .post(async (req, res) => {
     const blogPostData = req.body;
+    if (!blogPostData || Object.keys(blogPostData).length === 0) {
+      return res
+        .status(400)
+        .json({error: 'There are no fields in the request body'});
+    }
     try {
       blogPostData.title = validation.checkString(blogPostData.title, 'Title');
       blogPostData.body = validation.checkString(blogPostData.body, 'Body');
@@ -58,6 +63,11 @@ router
   })
   .put(async (req, res) => {
     const updatedData = req.body;
+    if (!updatedData || Object.keys(updatedData).length === 0) {
+      return res
+        .status(400)
+        .json({error: 'There are no fields in the request body'});
+    }
     try {
       req.params.id = validation.checkId(req.params.id, 'ID url param');
       updatedData.title = validation.checkString(updatedData.title, 'Title');
@@ -87,13 +97,18 @@ router
       );
       res.json(updatedPost);
     } catch (e) {
-      let status = e[0];
-      let message = e[1];
+      let status = e[0] ? e[0] : 500;
+      let message = e[1] ? e[1] : 'Internal Server Error';
       res.status(status).json({error: message});
     }
   })
   .patch(async (req, res) => {
     const requestBody = req.body;
+    if (!requestBody || Object.keys(requestBody).length === 0) {
+      return res
+        .status(400)
+        .json({error: 'There are no fields in the request body'});
+    }
     try {
       req.params.id = validation.checkId(req.params.id, 'Post ID');
       if (requestBody.title)
@@ -121,8 +136,8 @@ router
       );
       res.json(updatedPost);
     } catch (e) {
-      let status = e[0];
-      let message = e[1];
+      let status = e[0] ? e[0] : 500;
+      let message = e[1] ? e[1] : 'Internal Server Error';
       res.status(status).json({error: message});
     }
   })
@@ -136,8 +151,8 @@ router
       let deletedPost = await postData.removePost(req.params.id);
       res.status(200).json(deletedPost);
     } catch (e) {
-      let status = e[0];
-      let message = e[1];
+      let status = e[0] ? e[0] : 500;
+      let message = e[1] ? e[1] : 'Internal Server Error';
       res.status(status).json({error: message});
     }
   });
@@ -157,6 +172,11 @@ router.route('/tag/:tag').get(async (req, res) => {
 });
 
 router.route('/tag/rename').patch(async (req, res) => {
+  if (!req.body || Object.keys(req.body).length === 0) {
+    return res
+      .status(400)
+      .json({error: 'There are no fields in the request body'});
+  }
   try {
     req.body.oldTag = validation.checkString(req.body.oldTag, 'Old Tag');
     req.body.newTag = validation.checkString(req.body.newTag, 'New Tag');
@@ -171,8 +191,8 @@ router.route('/tag/rename').patch(async (req, res) => {
     );
     res.json(getNewTagPosts);
   } catch (e) {
-    let status = e[0];
-    let message = e[1];
+    let status = e[0] ? e[0] : 500;
+    let message = e[1] ? e[1] : 'Internal Server Error';
     res.status(status).json({error: message});
   }
 });
