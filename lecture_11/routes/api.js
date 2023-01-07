@@ -7,6 +7,7 @@ import xss from 'xss';
 router.route('/json').get(async (req, res) => {
   res.render('home_json', {
     pageTitle: 'So Much ToDo!',
+    h1title: 'Using Routes That Return JSON',
     partial: 'json_script',
   });
 });
@@ -14,6 +15,7 @@ router.route('/json').get(async (req, res) => {
 router.route('/html').get(async (req, res) => {
   res.render('home_html', {
     pageTitle: 'So Much ToDo!',
+    h1title: 'Using Routes That Return HTML',
     todoItems: getAll(),
     partial: 'html_script',
   });
@@ -34,19 +36,19 @@ router
   });
 
 router.route('/api/todo/complete/json/:id').post((req, res) => {
-  const updatedData = finishToDo(parseInt(request.params.id));
-  response.json(updatedData);
+  const updatedData = finishToDo(parseInt(req.params.id));
+  res.json(updatedData);
 });
 
 //HTML AJAX API call routes
 router.route('/api/todo/complete/html/:id').post((req, res) => {
-  const updatedData = finishToDo(parseInt(request.params.id));
-  response.render('partials/todo_item', {layout: null, ...updatedData});
+  const updatedData = finishToDo(parseInt(req.params.id));
+  res.render('partials/todo_item', {layout: null, ...updatedData});
 });
 
 router.route('/api/todo.html').post((req, res) => {
   const newTodo = makeToDo(xss(req.body.name), xss(req.body.description));
-  response.render('partials/todo_item', {layout: null, ...newTodo});
+  res.render('partials/todo_item', {layout: null, ...newTodo});
 });
 
 export default router;

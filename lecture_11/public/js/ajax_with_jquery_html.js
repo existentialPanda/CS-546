@@ -1,6 +1,5 @@
 (function ($) {
   // Let's start writing AJAX calls!
-
   let myNewTaskForm = $('#new-item-form'),
     newNameInput = $('#new-task-name'),
     newDecriptionArea = $('#new-task-description'),
