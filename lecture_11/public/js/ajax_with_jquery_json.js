@@ -60,7 +60,6 @@
 
     let newName = newNameInput.val();
     let newDescription = newDecriptionArea.val();
-    let newContent = $('#new-content');
 
     if (newName && newDescription) {
       let requestConfig = {
