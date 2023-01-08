@@ -9,9 +9,9 @@ function checkIsProperNumber(val, variableName) {
   }
 }
 //Our exported methods, this is just an object with the key being the function name and an arrow function as the value
-const description = 'This is a calculator for CS-546';
+export const description = 'This is a calculator for CS-546';
 
-const divideTwoNumbers = (numerator, denominator) => {
+export const divideTwoNumbers = (numerator, denominator) => {
   checkIsProperNumber(numerator, 'numerator');
   checkIsProperNumber(denominator, 'denominator');
 
@@ -21,29 +21,21 @@ const divideTwoNumbers = (numerator, denominator) => {
 
   return numerator / denominator;
 };
-const addTwoNumbers = (num1, num2) => {
+export const addTwoNumbers = (num1, num2) => {
   checkIsProperNumber(num1, 'first number');
   checkIsProperNumber(num2, 'second number');
 
   return num1 + num2;
 };
-const multiplyTwoNumbers = (num1, num2) => {
+export const multiplyTwoNumbers = (num1, num2) => {
   checkIsProperNumber(num1, 'first number');
   checkIsProperNumber(num2, 'second number');
 
   return num1 * num2;
 };
-const subtractTwoNumbers = (num1, num2) => {
+export const subtractTwoNumbers = (num1, num2) => {
   checkIsProperNumber(num1, 'first number');
   checkIsProperNumber(num2, 'second number');
 
   return num1 - num2;
-};
-
-export {
-  description,
-  addTwoNumbers,
-  subtractTwoNumbers,
-  divideTwoNumbers,
-  multiplyTwoNumbers,
 };
