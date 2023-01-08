@@ -9,4 +9,4 @@ const constructorMethod = (app) => {
   });
 };
 
-export {constructorMethod};
+export default constructorMethod;

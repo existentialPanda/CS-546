@@ -1,6 +1,6 @@
 import express from 'express';
 const app = express();
-import {constructorMethod} from './routes/index.js';
+import configRoutes from './routes/index.js';
 import {fileURLToPath} from 'url';
 import {dirname} from 'path';
 
@@ -18,7 +18,7 @@ app.use(express.urlencoded({extended: true}));
 app.engine('handlebars', exphbs.engine({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 
-constructorMethod(app);
+configRoutes(app);
 
 app.listen(3000, () => {
   console.log("We've now got a server!");

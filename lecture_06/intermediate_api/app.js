@@ -1,10 +1,10 @@
 import express from 'express';
 const app = express();
-import {constructorMethod} from './routes/index.js';
+import configRoutes from './routes/index.js';
 
 app.use(express.json());
 
-constructorMethod(app);
+configRoutes(app);
 
 app.listen(3000, () => {
   console.log("We've now got a server!");

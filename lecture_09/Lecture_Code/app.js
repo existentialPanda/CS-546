@@ -1,6 +1,6 @@
 import express from 'express';
 const app = express();
-import {constructorMethod} from './routes/index.js';
+import configRoutes from './routes/index.js';
 import {fileURLToPath} from 'url';
 import {dirname} from 'path';
 import exphbs from 'express-handlebars';
@@ -44,7 +44,7 @@ app.use(rewriteUnsupportedBrowserMethods);
 app.engine('handlebars', handlebarsInstance.engine);
 app.set('view engine', 'handlebars');
 
-constructorMethod(app);
+configRoutes(app);
 
 app.listen(3000, () => {
   console.log("We've now got a server!");
