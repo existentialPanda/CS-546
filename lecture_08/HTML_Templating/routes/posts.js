@@ -68,6 +68,9 @@ router
     } catch (e) {
       res.status(500).json({error: e});
     }
+  })
+  .put(async (req, res) => {
+    res.send('ROUTED TO PUT ROUTE');
   });
 
 router

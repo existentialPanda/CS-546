@@ -10,10 +10,6 @@ router.get('/server', (req, res) => {
   res.render('calculator/server', {});
 });
 
-router.put('/server', (req, res) => {
-  res.render('calculator/server', {});
-});
-
 router.post('/server', (req, res) => {
   let operation = (req.body.operation || 'add').toLowerCase();
   let firstNumber = parseInt(req.body.number1);
