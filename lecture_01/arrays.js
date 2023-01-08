@@ -1,6 +1,7 @@
 let myStringArray = ['hello', 'world', 'my', 'name', 'is', 'Patrick', 'world'];
 let myNumArray = [1, 2, 3, 4, 5];
 
+//We can have mixed type arrays in JS and we can also have functions as elements!
 let mixedArray = [
   1,
   'Hello',
@@ -11,6 +12,7 @@ let mixedArray = [
   },
 ];
 
+//Calling the function in the array
 mixedArray[4]('Hello world!');
 
 myStringArray.forEach((value) => {
