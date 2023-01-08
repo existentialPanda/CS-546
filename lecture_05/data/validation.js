@@ -20,7 +20,7 @@ const exportedMethods = {
     if (!isNaN(strVal))
       throw `Error: ${strVal} is not a valid value for ${varName} as it only contains digits`;
     return strVal;
-  },
+  }
 };
 
 export default exportedMethods;

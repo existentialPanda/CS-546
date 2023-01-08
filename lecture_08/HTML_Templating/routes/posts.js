@@ -56,7 +56,7 @@ router
         errors: errors,
         hasErrors: true,
         post: blogPostData,
-        users: users,
+        users: users
       });
       return;
     }

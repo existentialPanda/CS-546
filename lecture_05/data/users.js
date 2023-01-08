@@ -21,7 +21,7 @@ let exportedMethods = {
 
     let newUser = {
       firstName: firstName,
-      lastName: lastName,
+      lastName: lastName
     };
 
     const newInsertInformation = await userCollection.insertOne(newUser);
@@ -31,7 +31,7 @@ let exportedMethods = {
   async removeUser(id) {
     id = validation.checkId(id);
     const deletionInfo = await userCollection.findOneAndDelete({
-      _id: ObjectId(id),
+      _id: ObjectId(id)
     });
     if (deletionInfo.lastErrorObject.n === 0)
       throw `Error: Could not delete user with id of ${id}`;
@@ -45,7 +45,7 @@ let exportedMethods = {
 
     const userUpdateInfo = {
       firstName: firstName,
-      lastName: lastName,
+      lastName: lastName
     };
 
     const updateInfo = await userCollection.findOneAndUpdate(
@@ -56,7 +56,7 @@ let exportedMethods = {
     if (updateInfo.lastErrorObject.n === 0) throw 'Error: Update failed';
 
     return await updateInfo.value;
-  },
+  }
 };
 
 export default exportedMethods;

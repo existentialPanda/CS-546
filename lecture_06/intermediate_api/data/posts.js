@@ -38,9 +38,9 @@ const exportedMethods = {
       body: body,
       poster: {
         id: ObjectId(posterId),
-        name: `${userThatPosted.firstName} ${userThatPosted.lastName}`,
+        name: `${userThatPosted.firstName} ${userThatPosted.lastName}`
       },
-      tags: tags,
+      tags: tags
     };
     const newInsertInformation = await postCollection.insertOne(newPost);
     const newId = newInsertInformation.insertedId;
@@ -49,7 +49,7 @@ const exportedMethods = {
   async removePost(id) {
     id = validation.checkId(id);
     const deletionInfo = await postCollection.findOneAndDelete({
-      _id: ObjectId(id),
+      _id: ObjectId(id)
     });
     if (deletionInfo.lastErrorObject.n === 0)
       throw [404, `Could not delete post with id of ${id}`];
@@ -73,9 +73,9 @@ const exportedMethods = {
       poster: {
         id: updatedPost.posterId,
         firstName: userThatPosted.firstName,
-        lastName: userThatPosted.lastName,
+        lastName: userThatPosted.lastName
       },
-      tags: updatedPost.tags,
+      tags: updatedPost.tags
     };
 
     const updateInfo = await postCollection.findOneAndReplace(
@@ -131,15 +131,15 @@ const exportedMethods = {
     newTag = validation.checkString(newTag, 'New Tag');
     if (oldTag === newTag) throw 'tags are the same';
     let findDocuments = {
-      tags: oldTag,
+      tags: oldTag
     };
 
     let firstUpdate = {
-      $addToSet: {tags: newTag},
+      $addToSet: {tags: newTag}
     };
 
     let secondUpdate = {
-      $pull: {tags: oldTag},
+      $pull: {tags: oldTag}
     };
 
     let updateOne = await postCollection.updateMany(findDocuments, firstUpdate);
@@ -151,7 +151,7 @@ const exportedMethods = {
     );
     if (updateTwo.modifiedCount === 0) throw [500, 'Could not update tags'];
     return await this.getPostsByTag(newTag);
-  },
+  }
 };
 
 export default exportedMethods;

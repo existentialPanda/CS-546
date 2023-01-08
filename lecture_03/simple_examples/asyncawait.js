@@ -46,7 +46,7 @@ function date() {
     const dateDetails = {
       name: 'Cubana Restaurant',
       location: '55th Street',
-      table: 5,
+      table: 5
     };
     for (let i = 0; i <= 100000000; i++) {
       let x = i;

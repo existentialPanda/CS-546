@@ -19,7 +19,7 @@
 
       let requestConfig = {
         method: 'POST',
-        url: '/api/todo/complete/html/' + currentId,
+        url: '/api/todo/complete/html/' + currentId
       };
 
       $.ajax(requestConfig).then(function (responseMessage) {
@@ -50,8 +50,8 @@
         contentType: 'application/json',
         data: JSON.stringify({
           name: newName,
-          description: newDescription,
-        }),
+          description: newDescription
+        })
       };
       //AJAX Call. Gets the returned HTML data, binds the click event to the link and appends the new todo to the page
       $.ajax(requestConfig).then(function (responseMessage) {

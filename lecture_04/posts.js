@@ -49,8 +49,8 @@ const exportedMethods = {
       body: body,
       poster: {
         id: posterId,
-        name: dogThatPosted.name,
-      },
+        name: dogThatPosted.name
+      }
     };
 
     const insertInfo = await postCollection.insertOne(newPostInfo);
@@ -70,7 +70,7 @@ const exportedMethods = {
     if (!ObjectId.isValid(id)) throw 'invalid object ID';
 
     const deletionInfo = await postCollection.findOneAndDelete({
-      _id: ObjectId(id),
+      _id: ObjectId(id)
     });
 
     if (deletionInfo.lastErrorObject.n === 0) {
@@ -109,8 +109,8 @@ const exportedMethods = {
       body: body,
       poster: {
         id: posterId,
-        name: dogThatPosted.name,
-      },
+        name: dogThatPosted.name
+      }
     };
 
     const updatedInfo = await postCollection.findOneAndReplace(
@@ -123,7 +123,7 @@ const exportedMethods = {
     }
 
     return await this.getPostById(id);
-  },
+  }
 };
 
 export default exportedMethods;

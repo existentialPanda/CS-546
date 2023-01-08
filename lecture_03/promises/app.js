@@ -7,7 +7,7 @@ const promptMod = bluebird.promisifyAll(prompt);
 
 const getFileOperation = {
   name: 'fileName',
-  description: 'What file do you want to open?',
+  description: 'What file do you want to open?'
 };
 
 promptMod

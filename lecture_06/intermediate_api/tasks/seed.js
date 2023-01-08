@@ -23,14 +23,14 @@ await posts.addPost(
 );
 
 await posts.addPost("Aiden's first post", "This is aiden's first post", aid, [
-  'toys',
+  'toys'
 ]);
 await posts.addPost("Aiden's second post", "This is aiden's second post", aid, [
-  'aiden',
+  'aiden'
 ]);
 await posts.addPost("Aiden's third post", "This is aiden's thrid post", aid, [
   'aiden',
-  'kid',
+  'kid'
 ]);
 
 console.log('Done seeding database');

@@ -9,7 +9,7 @@ let mixedArray = [
   true,
   (message) => {
     console.log(message);
-  },
+  }
 ];
 
 //Calling the function in the array

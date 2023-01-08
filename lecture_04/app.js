@@ -35,7 +35,7 @@ try {
 try {
   porkChop = await dogData.addDog('Pork Chop', [
     'Golden Retriever',
-    'Labrador',
+    'Labrador'
   ]);
   console.log('Pork Chop the dog has been added, now she will blog!');
   console.log(porkChop);

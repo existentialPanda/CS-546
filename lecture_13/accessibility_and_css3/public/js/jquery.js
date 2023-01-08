@@ -4862,9 +4862,10 @@
     },
 
     // Includes some event props shared by KeyEvent and MouseEvent
-    props: 'altKey bubbles cancelable ctrlKey currentTarget eventPhase metaKey relatedTarget shiftKey target timeStamp view which'.split(
-      ' '
-    ),
+    props:
+      'altKey bubbles cancelable ctrlKey currentTarget eventPhase metaKey relatedTarget shiftKey target timeStamp view which'.split(
+        ' '
+      ),
 
     fixHooks: {},
 
@@ -4882,9 +4883,10 @@
     },
 
     mouseHooks: {
-      props: 'button buttons clientX clientY offsetX offsetY pageX pageY screenX screenY toElement'.split(
-        ' '
-      ),
+      props:
+        'button buttons clientX clientY offsetX offsetY pageX pageY screenX screenY toElement'.split(
+          ' '
+        ),
       filter: function (event, original) {
         var eventDoc,
           doc,
@@ -5292,7 +5294,8 @@
     }
   });
 
-  var rxhtmlTag = /<(?!area|br|col|embed|hr|img|input|link|meta|param)(([\w:]+)[^>]*)\/>/gi,
+  var rxhtmlTag =
+      /<(?!area|br|col|embed|hr|img|input|link|meta|param)(([\w:]+)[^>]*)\/>/gi,
     rtagName = /<([\w:]+)/,
     rhtml = /<|&#?\w+;/,
     rnoInnerhtml = /<(?:script|style|link)/i,
@@ -5317,8 +5320,11 @@
   // Support: IE9
   wrapMap.optgroup = wrapMap.option;
 
-  wrapMap.tbody = wrapMap.tfoot = wrapMap.colgroup = wrapMap.caption =
-    wrapMap.thead;
+  wrapMap.tbody =
+    wrapMap.tfoot =
+    wrapMap.colgroup =
+    wrapMap.caption =
+      wrapMap.thead;
   wrapMap.th = wrapMap.td;
 
   // Support: 1.x compatibility
@@ -8139,7 +8145,8 @@
     rts = /([?&])_=[^&]*/,
     rheaders = /^(.*?):[ \t]*([^\r\n]*)$/gm,
     // #7653, #8125, #8152: local protocol detection
-    rlocalProtocol = /^(?:about|app|app-storage|.+-extension|file|res|widget):$/,
+    rlocalProtocol =
+      /^(?:about|app|app-storage|.+-extension|file|res|widget):$/,
     rnoContent = /^(?:GET|HEAD)$/,
     rprotocol = /^\/\//,
     rurl = /^([\w.+-]+:)(?:\/\/(?:[^\/?#]*@|)([^\/?#:]*)(?::(\d+)|)|)/,

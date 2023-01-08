@@ -44,7 +44,7 @@ const exportedMethods = {
 
     let newDog = {
       name: name,
-      breeds: breeds,
+      breeds: breeds
     };
 
     const insertInfo = await dogCollection.insertOne(newDog);
@@ -65,7 +65,7 @@ const exportedMethods = {
     if (!ObjectId.isValid(id)) throw 'invalid object ID';
 
     const deletionInfo = await dogCollection.findOneAndDelete({
-      _id: ObjectId(id),
+      _id: ObjectId(id)
     });
 
     if (deletionInfo.lastErrorObject.n === 0) {
@@ -98,7 +98,7 @@ const exportedMethods = {
 
     const updatedDog = {
       name: name,
-      breeds: breeds,
+      breeds: breeds
     };
 
     const updatedInfo = await dogCollection.findOneAndUpdate(
@@ -111,7 +111,7 @@ const exportedMethods = {
     }
 
     return updatedInfo.value;
-  },
+  }
 };
 
 export default exportedMethods;

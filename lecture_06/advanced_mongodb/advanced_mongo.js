@@ -200,7 +200,7 @@ const exportedMethods = {
     // test with: findMoviesWithDirectorAndYear("Christopher Nolan", 2012)
     return await movieCollection
       .find({
-        $and: [{'info.release': releaseYear}, {'info.director': directorName}],
+        $and: [{'info.release': releaseYear}, {'info.director': directorName}]
       })
       .toArray();
   },
@@ -215,7 +215,7 @@ const exportedMethods = {
     // test with: findMoviesWithDirectorOrYear("Christopher Nolan", 2015)
     return await movieCollection
       .find({
-        $or: [{'info.release': releaseYear}, {'info.director': directorName}],
+        $or: [{'info.release': releaseYear}, {'info.director': directorName}]
       })
       .toArray();
   },
@@ -386,6 +386,6 @@ const exportedMethods = {
     );
 
     return await this.getMovie(id);
-  },
+  }
 };
 export default exportedMethods;

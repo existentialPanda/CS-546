@@ -28,7 +28,7 @@ const date = new Promise(function (resolve, reject) {
     const dateDetails = {
       name: 'Cubana Restaurant',
       location: '55th Street',
-      table: 5,
+      table: 5
     };
 
     resolve(dateDetails);

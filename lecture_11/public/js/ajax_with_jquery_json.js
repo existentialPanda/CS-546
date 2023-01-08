@@ -11,7 +11,7 @@
   //Set up request config
   let requestConfig = {
     method: 'GET',
-    url: '/api/todo/json',
+    url: '/api/todo/json'
   };
   //Make AJAX Call
   $.ajax(requestConfig).then(function (responseMessage) {
@@ -47,7 +47,7 @@
 
       let requestConfig = {
         method: 'POST',
-        url: '/api/todo/complete/json/' + currentId,
+        url: '/api/todo/complete/json/' + currentId
       };
 
       $.ajax(requestConfig).then(function (responseMessage) {
@@ -77,8 +77,8 @@
         contentType: 'application/json',
         data: JSON.stringify({
           name: newName,
-          description: newDescription,
-        }),
+          description: newDescription
+        })
       };
       //AJAX Call. Gets the returned JSON data, creates the elements, binds the click event to the link and appends the new todo to the page
       $.ajax(requestConfig).then(function (responseMessage) {

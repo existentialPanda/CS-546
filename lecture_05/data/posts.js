@@ -28,8 +28,8 @@ const exportedMethods = {
       body: body,
       poster: {
         id: posterId,
-        name: `${userThatPosted.firstName} ${userThatPosted.lastName}`,
-      },
+        name: `${userThatPosted.firstName} ${userThatPosted.lastName}`
+      }
     };
 
     const newInsertInformation = await postCollection.insertOne(newPost);
@@ -40,7 +40,7 @@ const exportedMethods = {
   async removePost(id) {
     id = validation.checkId(id);
     const deletionInfo = await postCollection.findOneAndDelete({
-      _id: ObjectId(id),
+      _id: ObjectId(id)
     });
     if (deletionInfo.lastErrorObject.n === 0)
       throw `Could not delete post with id of ${id}`;
@@ -59,8 +59,8 @@ const exportedMethods = {
       poster: {
         id: posterId,
         firstName: userThatPosted.firstName,
-        lastName: userThatPosted.lastName,
-      },
+        lastName: userThatPosted.lastName
+      }
     };
     const updateInfo = await postCollection.findOneAndUpdate(
       {_id: ObjectId(id)},
@@ -69,7 +69,7 @@ const exportedMethods = {
     );
     if (updateInfo.lastErrorObject.n === 0) throw 'Error: Update failed';
     return updateInfo.value;
-  },
+  }
 };
 
 export default exportedMethods;

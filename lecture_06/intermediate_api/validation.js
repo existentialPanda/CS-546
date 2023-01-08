@@ -35,7 +35,7 @@ const exportedMethods = {
     }
 
     return arr;
-  },
+  }
 };
 
 export default exportedMethods;

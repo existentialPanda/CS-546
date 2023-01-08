@@ -38,7 +38,7 @@ const exportedMethods = {
     checkIsProperNumber(num2, 'second number');
 
     return num1 - num2;
-  },
+  }
 };
 
 export default exportedMethods;

@@ -3,7 +3,7 @@ import prompt from 'prompt';
 
 const getFileOperation = {
   name: 'fileName',
-  description: 'What file do you want to open?',
+  description: 'What file do you want to open?'
 };
 
 // We're going to do our first asynchronous operation!

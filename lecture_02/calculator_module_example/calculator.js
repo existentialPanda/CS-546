@@ -45,5 +45,5 @@ export {
   addTwoNumbers,
   subtractTwoNumbers,
   divideTwoNumbers,
-  multiplyTwoNumbers,
+  multiplyTwoNumbers
 };

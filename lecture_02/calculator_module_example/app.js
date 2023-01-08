@@ -2,7 +2,7 @@ import {
   addTwoNumbers,
   divideTwoNumbers,
   subtractTwoNumbers,
-  multiplyTwoNumbers,
+  multiplyTwoNumbers
 } from './calculator.js';
 
 //Now we can start calling the functions to test out our functions.
