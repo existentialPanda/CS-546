@@ -8,8 +8,7 @@ router.route('/json').get(async (req, res) => {
   res.render('home', {
     pageTitle: 'So Much ToDo!',
     h3title: 'Using Routes That Return JSON',
-    script_partial: 'json_script',
-    form_partial: 'form'
+    script_partial: 'json_script'
   });
 });
 
@@ -18,8 +17,7 @@ router.route('/html').get(async (req, res) => {
     pageTitle: 'So Much ToDo!',
     h3title: 'Using Routes That Return HTML',
     todoItems: getAll(),
-    script_partial: 'html_script',
-    form_partial: 'form'
+    script_partial: 'html_script'
   });
 });
 
