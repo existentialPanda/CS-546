@@ -2,15 +2,15 @@ import {users} from '../config/mongoCollections.js';
 import {ObjectId} from 'mongodb';
 import validation from '../validation.js';
 
-const userCollection = await users();
-
 let exportedMethods = {
   async getAllUsers() {
+    const userCollection = await users();
     const userList = await userCollection.find({}).toArray();
     return userList;
   },
   async getUserById(id) {
     id = validation.checkId(id);
+    const userCollection = await users();
     const user = await userCollection.findOne({_id: ObjectId(id)});
     if (!user) throw 'Error: User not found';
     return user;
@@ -23,13 +23,14 @@ let exportedMethods = {
       firstName: firstName,
       lastName: lastName
     };
-
+    const userCollection = await users();
     const newInsertInformation = await userCollection.insertOne(newUser);
     if (!newInsertInformation.insertedId) throw 'Insert failed!';
     return await this.getUserById(newInsertInformation.insertedId.toString());
   },
   async removeUser(id) {
     id = validation.checkId(id);
+    const userCollection = await users();
     const deletionInfo = await userCollection.findOneAndDelete({
       _id: ObjectId(id)
     });
@@ -47,7 +48,7 @@ let exportedMethods = {
       firstName: firstName,
       lastName: lastName
     };
-
+    const userCollection = await users();
     const updateInfo = await userCollection.findOneAndUpdate(
       {_id: ObjectId(id)},
       {$set: userUpdateInfo},
@@ -75,7 +76,7 @@ let exportedMethods = {
         userInfo.lastName,
         'last name'
       );
-
+    const userCollection = await users();
     const updateInfo = await userCollection.findOneAndUpdate(
       {_id: ObjectId(id)},
       {$set: userInfo},
