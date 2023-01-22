@@ -1,9 +1,8 @@
 import bluebird from 'bluebird';
 import prompt from 'prompt';
 import fs from 'fs';
-//const prompt = promisifyAll(require('prompt'));
-const fsMod = bluebird.promisifyAll(fs);
-const promptMod = bluebird.promisifyAll(prompt);
+const fsPromise = bluebird.promisifyAll(fs);
+const promptPromise = bluebird.promisifyAll(prompt);
 
 // We declare an async function that we will run below, so that we may use await.
 async function main() {
@@ -13,7 +12,7 @@ async function main() {
   };
 
   // Gets result of user input
-  let promptResult = await promptMod.getAsync([getFileOperation]);
+  let promptResult = await promptPromise.getAsync([getFileOperation]);
   console.log(promptResult);
   const fileName = promptResult.fileName;
 
@@ -23,7 +22,7 @@ async function main() {
 
   console.log(`About to read ${fileName} if it exists`);
 
-  const fileContent = await fsMod.readFileAsync(fileName, 'utf-8');
+  const fileContent = await fsPromise.readFileAsync(fileName, 'utf-8');
 
   const reversedContent = fileContent.split('').reverse().join('');
 
@@ -31,7 +30,7 @@ async function main() {
 
   // Now we have the actual file data read
   console.log('before write');
-  await fsMod.writeFileAsync(reversedName, reversedContent);
+  await fsPromise.writeFileAsync(reversedName, reversedContent);
   console.log('Finished!');
 
   return null;

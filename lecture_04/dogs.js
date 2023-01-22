@@ -1,8 +1,6 @@
 import {dogs} from './mongoCollections.js';
 import {ObjectId} from 'mongodb';
 
-const dogCollection = await dogs();
-
 const exportedMethods = {
   async getDogById(id) {
     if (!id) throw 'You must provide an id to search for';
@@ -11,13 +9,14 @@ const exportedMethods = {
       throw 'Id cannot be an empty string or just spaces';
     id = id.trim();
     if (!ObjectId.isValid(id)) throw 'invalid object ID';
-
+    const dogCollection = await dogs();
     const doggo = await dogCollection.findOne({_id: ObjectId(id)});
     if (doggo === null) throw 'No dog with that id';
     doggo._id = doggo._id.toString();
     return doggo;
   },
   async getAllDogs() {
+    const dogCollection = await dogs();
     let dogList = await dogCollection.find({}).toArray();
     if (!dogList) throw 'Could not get all dogs';
     dogList = dogList.map((element) => {
@@ -46,7 +45,7 @@ const exportedMethods = {
       name: name,
       breeds: breeds
     };
-
+    const dogCollection = await dogs();
     const insertInfo = await dogCollection.insertOne(newDog);
     if (!insertInfo.acknowledged || !insertInfo.insertedId)
       throw 'Could not add dog';
@@ -63,7 +62,7 @@ const exportedMethods = {
       throw 'id cannot be an empty string or just spaces';
     id = id.trim();
     if (!ObjectId.isValid(id)) throw 'invalid object ID';
-
+    const dogCollection = await dogs();
     const deletionInfo = await dogCollection.findOneAndDelete({
       _id: ObjectId(id)
     });
@@ -100,7 +99,7 @@ const exportedMethods = {
       name: name,
       breeds: breeds
     };
-
+    const dogCollection = await dogs();
     const updatedInfo = await dogCollection.findOneAndUpdate(
       {_id: ObjectId(id)},
       {$set: updatedDog},

@@ -3,14 +3,14 @@ import userData from './users.js';
 import {ObjectId} from 'mongodb';
 import validation from './validation.js';
 
-const postCollection = await posts();
-
 const exportedMethods = {
   async getAllPosts() {
+    const postCollection = await posts();
     return await postCollection.find({}).toArray();
   },
   async getPostById(id) {
     id = validation.checkId(id);
+    const postCollection = await posts();
     const post = await postCollection.findOne({_id: ObjectId(id)});
 
     if (!post) throw 'Error: Post not found';
@@ -31,7 +31,7 @@ const exportedMethods = {
         name: `${userThatPosted.firstName} ${userThatPosted.lastName}`
       }
     };
-
+    const postCollection = await posts();
     const newInsertInformation = await postCollection.insertOne(newPost);
     if (!newInsertInformation.insertedId) throw 'Error: Insert failed!';
 
@@ -39,6 +39,7 @@ const exportedMethods = {
   },
   async removePost(id) {
     id = validation.checkId(id);
+    const postCollection = await posts();
     const deletionInfo = await postCollection.findOneAndDelete({
       _id: ObjectId(id)
     });
@@ -62,6 +63,7 @@ const exportedMethods = {
         lastName: userThatPosted.lastName
       }
     };
+    const postCollection = await posts();
     const updateInfo = await postCollection.findOneAndUpdate(
       {_id: ObjectId(id)},
       {$set: updatedPost},

@@ -3,15 +3,15 @@ import userData from './users.js';
 import {ObjectId} from 'mongodb';
 import validation from '../validation.js';
 
-const postCollection = await posts();
-
 const exportedMethods = {
   async getAllPosts() {
+    const postCollection = await posts();
     return await postCollection.find({}).toArray();
   },
 
   async getPostById(id) {
     id = validation.checkId(id);
+    const postCollection = await posts();
     const post = await postCollection.findOne({_id: ObjectId(id)});
 
     if (!post) throw 'Error: Post not found';
@@ -20,6 +20,7 @@ const exportedMethods = {
   },
   async getPostsByTag(tag) {
     tag = validation.checkString(tag, 'Tag');
+    const postCollection = await posts();
     return await postCollection.find({tags: tag}).toArray();
   },
   async addPost(title, body, posterId, tags) {
@@ -42,12 +43,14 @@ const exportedMethods = {
       },
       tags: tags
     };
+    const postCollection = await posts();
     const newInsertInformation = await postCollection.insertOne(newPost);
     const newId = newInsertInformation.insertedId;
     return await this.getPostById(newId.toString());
   },
   async removePost(id) {
     id = validation.checkId(id);
+    const postCollection = await posts();
     const deletionInfo = await postCollection.findOneAndDelete({
       _id: ObjectId(id)
     });
@@ -77,7 +80,7 @@ const exportedMethods = {
       },
       tags: updatedPost.tags
     };
-
+    const postCollection = await posts();
     const updateInfo = await postCollection.findOneAndReplace(
       {_id: ObjectId(id)},
       updatedPostData,
@@ -116,6 +119,7 @@ const exportedMethods = {
     if (updatedPost.body) {
       updatedPostData.body = validation.checkString(updatedPost.body, 'Body');
     }
+    const postCollection = await posts();
     let newPost = await postCollection.findOneAndUpdate(
       {_id: ObjectId(id)},
       {$set: updatedPostData},
@@ -141,7 +145,7 @@ const exportedMethods = {
     let secondUpdate = {
       $pull: {tags: oldTag}
     };
-
+    const postCollection = await posts();
     let updateOne = await postCollection.updateMany(findDocuments, firstUpdate);
     if (updateOne.matchedCount === 0)
       throw [404, `Could not find any posts with old tag: ${oldTag}`];

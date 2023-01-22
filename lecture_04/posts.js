@@ -2,8 +2,6 @@ import {posts} from './mongoCollections.js';
 import dogData from './dogs.js';
 import {ObjectId} from 'mongodb';
 
-const postCollection = await posts();
-
 const exportedMethods = {
   async getPostById(id) {
     if (!id) throw 'You must provide an id to search for';
@@ -12,7 +10,7 @@ const exportedMethods = {
       throw 'id cannot be an empty string or just spaces';
     id = id.trim();
     if (!ObjectId.isValid(id)) throw 'invalid object ID';
-
+    const postCollection = await posts();
     const post = await postCollection.findOne({_id: ObjectId(id)});
     if (!post) throw 'No post with that id';
 
@@ -52,7 +50,7 @@ const exportedMethods = {
         name: dogThatPosted.name
       }
     };
-
+    const postCollection = await posts();
     const insertInfo = await postCollection.insertOne(newPostInfo);
     if (!insertInfo.acknowledged || !insertInfo.insertedId)
       throw 'Could not add post';
@@ -68,7 +66,7 @@ const exportedMethods = {
       throw 'id cannot be an empty string or just spaces';
     id = id.trim();
     if (!ObjectId.isValid(id)) throw 'invalid object ID';
-
+    const postCollection = await posts();
     const deletionInfo = await postCollection.findOneAndDelete({
       _id: ObjectId(id)
     });
@@ -112,7 +110,7 @@ const exportedMethods = {
         name: dogThatPosted.name
       }
     };
-
+    const postCollection = await posts();
     const updatedInfo = await postCollection.findOneAndReplace(
       {_id: ObjectId(id)},
       updatedPost
