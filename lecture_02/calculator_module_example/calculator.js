@@ -24,7 +24,6 @@ const divideTwoNumbers = (numerator, denominator) => {
 const addTwoNumbers = (num1, num2) => {
   checkIsProperNumber(num1, 'first number');
   checkIsProperNumber(num2, 'second number');
-
   return num1 + num2;
 };
 const multiplyTwoNumbers = (num1, num2) => {

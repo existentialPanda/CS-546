@@ -8,12 +8,12 @@ let mixedArray = [
   undefined,
   true,
   (message) => {
-    console.log(message);
+    return message;
   }
 ];
 
 //Calling the function in the array
-mixedArray[4]('Hello world!');
+console.log(mixedArray[4]('Hello world!'));
 
 myStringArray.forEach((value) => {
   console.log(value);
@@ -39,24 +39,25 @@ let worldArray = myStringArray.filter((element) => {
 console.log(worldArray);
 
 let findPatrick = myStringArray.find((element) => {
-  return element === 'Patrick';
+  return element === 'world';
 });
 
 console.log(findPatrick);
 
-let findWorld = myStringArray.find((element, index) => {
-  console.log(index);
-  return element === 'world';
-});
+// let findWorld = myStringArray.find((element, index) => {
+//   console.log(index);
+//   return element === 'world';
+// });
 
-console.log(findWorld);
+// console.log(findWorld);
 
-// console.log(myNumArray);
+// // console.log(myNumArray);
 myNumArray.push(6);
 console.log(myNumArray);
 myNumArray.push('Patrick');
 console.log(myNumArray);
-console.log(myNumArray.pop());
+let popped = myNumArray.pop();
+console.log(popped);
 console.log(myNumArray);
 
-// console.log(myNumArray.join('&&'));
+// // console.log(myNumArray.join('&&'));

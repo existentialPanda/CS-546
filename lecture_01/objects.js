@@ -27,11 +27,17 @@ console.log(myObj);
 
 console.log(myObj.myFn('Hey Patrick'));
 
+//we can use numbers as keys, however, they will be cast to strings.  We also cannot use dot notation for keys that are numbers. so myObj.7 would not work, we need to use bracket notation.
+myObj[7] = "I'm 7";
+console.log(myObj);
+
 //spread opeator
 let mySpreadObj1 = {a: 1, b: 2, c: 3};
 let mySpreadObj2 = {a: 25, d: 4, e: 5};
-let myCombinedObj = {...mySpreadObj1, ...mySpreadObj2, ...myObj};
+let myCombinedObj = {...mySpreadObj2, ...mySpreadObj1};
 console.log(myCombinedObj);
+// myObj["hello"]
+// myObj.hello
 
 //object as a constat.
 const myConstObj = {a: 1, b: 2, c: 3};
@@ -41,6 +47,7 @@ console.log(myConstObj);
 myConstObj.d = 6;
 console.log(myConstObj);
 
+myConstObj = {a: 1, b: 2};
 //object equality
 /*
   we CANNOT check if two objects are equal to each other using == or ===

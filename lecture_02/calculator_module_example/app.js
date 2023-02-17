@@ -8,7 +8,9 @@ import {
 //Now we can start calling the functions to test out our functions.
 
 try {
-  console.log(addTwoNumbers(5, 1));
+  console.log(addTwoNumbers(NaN, 1));
+  let x = 25;
+  console.log(x);
 } catch (e) {
   console.log(e);
 }

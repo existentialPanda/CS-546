@@ -1,17 +1,10 @@
 import {getApiData} from './getdata.js';
 
-/*Uncomment these lines to demonstrate a top level await
-when we do this, then the console.log('After main is run'); is blocked
-until the request is done */
-
-// console.log('Top Levl Await');
-// console.log(await getApiData());
-
-/* comment out main and the main() function call when trying top level await*/
 async function main() {
   //try removing the await keyword and run the application
   try {
     console.log(await getApiData());
+    console.log('Another console.log that depends on getApiData');
   } catch (e) {
     console.log(e);
   }
@@ -25,3 +18,7 @@ main();
 	main is finished 
 */
 console.log('After main is run');
+
+for (let i = 0; i < 100; i++) {
+  console.log(i);
+}

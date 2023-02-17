@@ -10,7 +10,7 @@ const exportedMethods = {
     id = id.trim();
     if (!ObjectId.isValid(id)) throw 'invalid object ID';
     const dogCollection = await dogs();
-    const doggo = await dogCollection.findOne({_id: ObjectId(id)});
+    const doggo = await dogCollection.findOne({_id: new ObjectId(id)});
     if (doggo === null) throw 'No dog with that id';
     doggo._id = doggo._id.toString();
     return doggo;
@@ -64,7 +64,7 @@ const exportedMethods = {
     if (!ObjectId.isValid(id)) throw 'invalid object ID';
     const dogCollection = await dogs();
     const deletionInfo = await dogCollection.findOneAndDelete({
-      _id: ObjectId(id)
+      _id: new ObjectId(id)
     });
 
     if (deletionInfo.lastErrorObject.n === 0) {
@@ -101,14 +101,14 @@ const exportedMethods = {
     };
     const dogCollection = await dogs();
     const updatedInfo = await dogCollection.findOneAndUpdate(
-      {_id: ObjectId(id)},
+      {_id: new ObjectId(id)},
       {$set: updatedDog},
       {returnDocument: 'after'}
     );
     if (updatedInfo.lastErrorObject.n === 0) {
       throw 'could not update dog successfully';
     }
-
+    updatedInfo.value._id = updatedInfo.value._id.toString();
     return updatedInfo.value;
   }
 };

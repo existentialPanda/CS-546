@@ -11,13 +11,14 @@ const exportedMethods = {
     id = id.trim();
     if (!ObjectId.isValid(id)) throw 'invalid object ID';
     const postCollection = await posts();
-    const post = await postCollection.findOne({_id: ObjectId(id)});
+    const post = await postCollection.findOne({_id: new ObjectId(id)});
     if (!post) throw 'No post with that id';
 
     return post;
   },
 
   async getAllPosts() {
+    const postCollection = await posts();
     const postList = await postCollection.find({}).toArray();
     if (!postList) throw 'Could not get all posts';
     return postList;
@@ -68,7 +69,7 @@ const exportedMethods = {
     if (!ObjectId.isValid(id)) throw 'invalid object ID';
     const postCollection = await posts();
     const deletionInfo = await postCollection.findOneAndDelete({
-      _id: ObjectId(id)
+      _id: new ObjectId(id)
     });
 
     if (deletionInfo.lastErrorObject.n === 0) {
@@ -112,7 +113,7 @@ const exportedMethods = {
     };
     const postCollection = await posts();
     const updatedInfo = await postCollection.findOneAndReplace(
-      {_id: ObjectId(id)},
+      {_id: new ObjectId(id)},
       updatedPost
     );
 

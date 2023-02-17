@@ -16,6 +16,6 @@ console.log(multipliedString);
 
 console.log(multipliedString + 5);
 
-//console.log(multipliedString);
-multipliedString = 'H';
+// //console.log(multipliedString);
+multipliedString = '5';
 console.log(parseInt(multipliedString) + 5);

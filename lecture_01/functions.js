@@ -1,12 +1,12 @@
 function myFunction() {
-  return console.log("I'm a global function");
+  return "I'm a global function";
 }
 
 console.log(myFunction());
 
 function printThisMessage(message) {
   console.log("We've received a message!");
-  console.log(message);
+  return message;
 }
 
 printThisMessage('Hello, CS-546');
@@ -49,21 +49,21 @@ function haveAnInnerFunction() {
   }
 }
 
-haveAnInnerFunction();
+//haveAnInnerFunction().myInnerFunction();
 
-//myInnerFunction();
+// myInnerFunction();
 
 function demonstrateVarVersusLet() {
   // Say you want to do some basic counts, like count the number of odds and then
   // the number of event numbers from 0 to 12
 
   // Change this between "odd", "even", and "both";
-  const whatDoICount = 'odd';
+  const whatDoICount = 'both';
   const howManyToCount = 12;
-
+  let count;
   if (whatDoICount === 'odd' || whatDoICount === 'both') {
     // CHANGE THIS BETWEEN `var` and `let` to see difference!
-    var count;
+    //let count;
     for (let i = 0; i < howManyToCount; i++) {
       if (i % 2 === 1) {
         if (count === undefined) {
@@ -79,7 +79,7 @@ function demonstrateVarVersusLet() {
 
   if (whatDoICount === 'even' || whatDoICount === 'both') {
     // CHANGE THIS BETWEEN `var` and `let` to see difference!
-    var count;
+    //let count;
     for (let i = 0; i < howManyToCount; i++) {
       if (i % 2 === 0) {
         if (count === undefined) {
@@ -92,6 +92,8 @@ function demonstrateVarVersusLet() {
       console.log(`at index ${i} there are ${count} even numbers`);
     }
   }
+
+  //console.log(count);
 }
 
 demonstrateVarVersusLet();
