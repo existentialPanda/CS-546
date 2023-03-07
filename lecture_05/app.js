@@ -1,8 +1,8 @@
 import express from 'express';
 const app = express();
-import configRoutes from './routes/index.js';
+import configRoutesFunction from './routes/index.js';
 
-configRoutes(app);
+configRoutesFunction(app);
 
 app.listen(3000, () => {
   console.log("We've now got a server!");

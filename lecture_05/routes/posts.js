@@ -2,6 +2,7 @@ import {Router} from 'express';
 const router = Router();
 import {postData} from '../data/index.js';
 import validation from '../data/validation.js';
+
 router
   .route('/:id')
   .get(async (req, res) => {

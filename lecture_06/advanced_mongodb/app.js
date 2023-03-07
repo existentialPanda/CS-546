@@ -72,7 +72,7 @@ console.log(updateDirector);
 const incYear = await advMongo.bumpReleaseYearUp(1);
 console.log(incYear);
 
-const findLeo = await advMongo.findByCast('Leonardo DiCaprio');
+const findLeo = await advMongo.findByCast('Elliot Page');
 console.log(findLeo);
 
 const findPhil = await advMongo.findByReviewerName('Phil');
@@ -89,6 +89,16 @@ const addCastDup = await advMongo.addCastMemberAllowDuplicates(
   'Leonardo DiCaprio'
 );
 console.log(addCastDup);
+
+//Lets get a single review from a movie
+//get the movie and then use one of the id's of the reviews to get the review. (since the data rebuilds after after run, we can't simply hardcode the id of the review)
+const inception = await advMongo.getMovie(1);
+
+//Get a single review object without the movie.
+const reviewById = await advMongo.findByReviewIdReviewOnly(
+  inception.reviews[0]._id
+);
+console.dir(reviewById, {depth: null});
 
 console.log('done');
 process.exit();

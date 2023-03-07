@@ -17,7 +17,7 @@ const exportedMethods = {
     if (!movie) {
       throw 'Could not find movie with id of ' + id;
     }
-    return JSON.stringify(movie);
+    return movie;
   },
 
   // =================
@@ -313,6 +313,22 @@ const exportedMethods = {
     return await movieCollection
       .find({'reviews.reviewer': reviewerName})
       .toArray();
+    // alternatively, we can pass an entire document describing our subdocument in our array using $elemMatch
+    //            return movieCollection.find({ "reviews": { $elemMatch: { "reviewer": reviewerName } } }).toArray();
+  },
+
+  async findByReviewIdReviewOnly(reviewId) {
+    const projection = {_id: 0, 'reviews.$': 1};
+    if (!reviewId) throw 'You must provide a name for the reviewer';
+    const movieCollection = await advancedMovies();
+    // pass 'Phil' or 'Sallie' to find multiple matches, or 'Definitely Not Leo' to find a suspicious review.
+    const foundReview = await movieCollection.findOne(
+      {'reviews._id': reviewId},
+      {projection: {_id: 0, 'reviews.$': 1}}
+    );
+    console.dir(foundReview, {depth: null});
+    return foundReview.reviews[0];
+
     // alternatively, we can pass an entire document describing our subdocument in our array using $elemMatch
     //            return movieCollection.find({ "reviews": { $elemMatch: { "reviewer": reviewerName } } }).toArray();
   },
