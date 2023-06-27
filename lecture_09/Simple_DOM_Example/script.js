@@ -3,7 +3,6 @@ let textInput = document.getElementById('text_input');
 let errorDiv = document.getElementById('error');
 let myUl = document.getElementById('list');
 let frmLabel = document.getElementById('formLabel');
-
 if (myForm) {
   myForm.addEventListener('submit', (event) => {
     console.log('Form submission fired');

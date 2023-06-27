@@ -29,6 +29,9 @@ router
     res.json(todos);
   })
   .post(async (req, res) => {
+    // let cleanName = req.body.name;
+    // let cleanDesc = req.body.description;
+
     let cleanName = xss(req.body.name);
     let cleanDesc = xss(req.body.description);
     let todo = makeToDo(cleanName, cleanDesc);
@@ -47,7 +50,9 @@ router.route('/api/todo/complete/html/:id').post((req, res) => {
 });
 
 router.route('/api/todo.html').post((req, res) => {
-  const newTodo = makeToDo(xss(req.body.name), xss(req.body.description));
+  let cleanName = xss(req.body.name);
+  let cleanDesc = xss(req.body.description);
+  const newTodo = makeToDo(cleanName, cleanDesc);
   res.render('partials/todo_item', {layout: null, ...newTodo});
 });
 

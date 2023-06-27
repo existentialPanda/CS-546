@@ -318,7 +318,6 @@ const exportedMethods = {
   },
 
   async findByReviewIdReviewOnly(reviewId) {
-    const projection = {_id: 0, 'reviews.$': 1};
     if (!reviewId) throw 'You must provide a name for the reviewer';
     const movieCollection = await advancedMovies();
     // pass 'Phil' or 'Sallie' to find multiple matches, or 'Definitely Not Leo' to find a suspicious review.

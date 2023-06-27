@@ -15,11 +15,13 @@ router
   })
   .post(async (req, res) => {
     const blogPostData = req.body;
+    //make sure there is something present in the req.body
     if (!blogPostData || Object.keys(blogPostData).length === 0) {
       return res
         .status(400)
         .json({error: 'There are no fields in the request body'});
     }
+    //check all inputs, that should respond with a 400
     try {
       blogPostData.title = validation.checkString(blogPostData.title, 'Title');
       blogPostData.body = validation.checkString(blogPostData.body, 'Body');
@@ -37,6 +39,7 @@ router
       return res.status(400).json({error: e});
     }
 
+    //insert the post
     try {
       const {title, body, tags, posterId} = blogPostData;
       const newPost = await postData.addPost(title, body, posterId, tags);
@@ -49,11 +52,13 @@ router
 router
   .route('/:id')
   .get(async (req, res) => {
+    //check inputs that produce 400 status
     try {
       req.params.id = validation.checkId(req.params.id, 'Id URL Param');
     } catch (e) {
       return res.status(400).json({error: e});
     }
+    //try getting the post by ID
     try {
       const post = await postData.getPostById(req.params.id);
       res.json(post);
@@ -63,11 +68,14 @@ router
   })
   .put(async (req, res) => {
     const updatedData = req.body;
+    //make sure there is something in the req.body
     if (!updatedData || Object.keys(updatedData).length === 0) {
       return res
         .status(400)
         .json({error: 'There are no fields in the request body'});
     }
+
+    //check all the inputs that will return 400 if they fail
     try {
       req.params.id = validation.checkId(req.params.id, 'ID url param');
       updatedData.title = validation.checkString(updatedData.title, 'Title');
@@ -89,7 +97,7 @@ router
     } catch (e) {
       return res.status(400).json({error: e});
     }
-
+    //try to update the post
     try {
       const updatedPost = await postData.updatePostPut(
         req.params.id,
@@ -97,18 +105,18 @@ router
       );
       res.json(updatedPost);
     } catch (e) {
-      let status = e[0] ? e[0] : 500;
-      let message = e[1] ? e[1] : 'Internal Server Error';
-      res.status(status).json({error: message});
+      res.status(404).json({error: e});
     }
   })
   .patch(async (req, res) => {
     const requestBody = req.body;
+    //check to make sure there is something in req.body
     if (!requestBody || Object.keys(requestBody).length === 0) {
       return res
         .status(400)
         .json({error: 'There are no fields in the request body'});
     }
+    //check the inputs that will return 400 is fail
     try {
       req.params.id = validation.checkId(req.params.id, 'Post ID');
       if (requestBody.title)
@@ -128,7 +136,7 @@ router
     } catch (e) {
       return res.status(400).json({error: e});
     }
-
+    //try to perform update
     try {
       const updatedPost = await postData.updatePostPatch(
         req.params.id,
@@ -136,52 +144,54 @@ router
       );
       res.json(updatedPost);
     } catch (e) {
-      let status = e[0] ? e[0] : 500;
-      let message = e[1] ? e[1] : 'Internal Server Error';
-      res.status(status).json({error: message});
+      res.status(404).json({error: e});
     }
   })
   .delete(async (req, res) => {
+    //check the id
     try {
       req.params.id = validation.checkId(req.params.id, 'Id URL Param');
     } catch (e) {
       return res.status(400).json({error: e});
     }
+    //try to delete post
     try {
       let deletedPost = await postData.removePost(req.params.id);
-      res.status(200).json(deletedPost);
+      res.json(deletedPost);
     } catch (e) {
-      let status = e[0] ? e[0] : 500;
-      let message = e[1] ? e[1] : 'Internal Server Error';
-      res.status(status).json({error: message});
+      res.status(404).json({error: e});
     }
   });
 
 router.route('/tag/:tag').get(async (req, res) => {
+  //check input
   try {
     req.params.tag = validation.checkString(req.params.tag, 'Tag');
   } catch (e) {
     return res.status(400).json({error: e});
   }
+  //try to get all posts by tag
   try {
     const postList = await postData.getPostsByTag(req.params.tag);
     res.json(postList);
   } catch (e) {
-    res.status(400).json({error: e});
+    res.status(404).json({error: e});
   }
 });
 
 router.route('/tag/rename').patch(async (req, res) => {
+  //check req.body
   if (!req.body || Object.keys(req.body).length === 0) {
     return res
       .status(400)
       .json({error: 'There are no fields in the request body'});
   }
+  //check input params
   try {
     req.body.oldTag = validation.checkString(req.body.oldTag, 'Old Tag');
     req.body.newTag = validation.checkString(req.body.newTag, 'New Tag');
   } catch (e) {
-    res.status(400).json({error: e});
+    return res.status(400).json({error: e});
   }
 
   try {
@@ -189,11 +199,9 @@ router.route('/tag/rename').patch(async (req, res) => {
       req.body.oldTag,
       req.body.newTag
     );
-    res.json(getNewTagPosts);
+    return res.json(getNewTagPosts);
   } catch (e) {
-    let status = e[0] ? e[0] : 500;
-    let message = e[1] ? e[1] : 'Internal Server Error';
-    res.status(status).json({error: message});
+    return res.status(404).json({error: e});
   }
 });
 

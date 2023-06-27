@@ -11,6 +11,7 @@ router.get('/server', (req, res) => {
 });
 
 router.post('/server', (req, res) => {
+  console.log('In server route for processing');
   let operation = (req.body.operation || 'add').toLowerCase();
   let firstNumber = parseInt(req.body.number1);
   let secondNumber = parseInt(req.body.number2);
@@ -33,6 +34,7 @@ router.post('/server', (req, res) => {
       default:
         throw 'Operation not supported';
     }
+    console.log('result', result);
   } catch (e) {
     res.render('calculator/server', {
       firstNumber: firstNumber,

@@ -12,7 +12,7 @@ const exportedMethods = {
   async getPostById(id) {
     id = validation.checkId(id);
     const postCollection = await posts();
-    const post = await postCollection.findOne({_id: ObjectId(id)});
+    const post = await postCollection.findOne({_id: new ObjectId(id)});
 
     if (!post) throw 'Error: Post not found';
 
@@ -52,10 +52,10 @@ const exportedMethods = {
     id = validation.checkId(id);
     const postCollection = await posts();
     const deletionInfo = await postCollection.findOneAndDelete({
-      _id: ObjectId(id)
+      _id: new ObjectId(id)
     });
     if (deletionInfo.lastErrorObject.n === 0)
-      throw [404, `Could not delete post with id of ${id}`];
+      throw `Could not delete post with id of ${id}`;
     return {...deletionInfo.value, deleted: true};
   },
   async updatePostPut(id, updatedPost) {
@@ -82,12 +82,12 @@ const exportedMethods = {
     };
     const postCollection = await posts();
     const updateInfo = await postCollection.findOneAndReplace(
-      {_id: ObjectId(id)},
+      {_id: new ObjectId(id)},
       updatedPostData,
       {returnDocument: 'after'}
     );
     if (updateInfo.lastErrorObject.n === 0)
-      throw [404, `Error: Update failed! Could not update post with id ${id}`];
+      throw `Error: Update failed! Could not update post with id ${id}`;
     return updateInfo.value;
   },
   async updatePostPatch(id, updatedPost) {
@@ -121,12 +121,12 @@ const exportedMethods = {
     }
     const postCollection = await posts();
     let newPost = await postCollection.findOneAndUpdate(
-      {_id: ObjectId(id)},
+      {_id: new ObjectId(id)},
       {$set: updatedPostData},
       {returnDocument: 'after'}
     );
     if (newPost.lastErrorObject.n === 0)
-      throw [404, `Could not update the post with id ${id}`];
+      throw `Could not update the post with id ${id}`;
 
     return newPost.value;
   },
@@ -148,7 +148,7 @@ const exportedMethods = {
     const postCollection = await posts();
     let updateOne = await postCollection.updateMany(findDocuments, firstUpdate);
     if (updateOne.matchedCount === 0)
-      throw [404, `Could not find any posts with old tag: ${oldTag}`];
+      throw `Could not find any posts with old tag: ${oldTag}`;
     let updateTwo = await postCollection.updateMany(
       findDocuments,
       secondUpdate

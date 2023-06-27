@@ -23,7 +23,26 @@ router
     return res.send(
       `DELETE request to http://localhost:3000/posts/${req.params.id}`
     );
+  })
+  .patch(async (req, res) => {
+    //patch code here.
   });
+
+router.get('/:id', async (req, res) => {
+  //get route here.
+});
+
+router.post('/:id', async (req, res) => {
+  //get route here.
+});
+
+router.delete('/:id', async (req, res) => {
+  //get route here.
+});
+
+router.patch('/:id', async (req, res) => {
+  //get route here.
+});
 
 router
   .route('/')
@@ -41,5 +60,25 @@ router
   .delete(async (req, res) => {
     return res.send('DELETE request to http://localhost:3000/posts');
   });
+
+// router.get('/', async (req, res) => {
+//   try {
+//     const postList = await postData.getAllPosts();
+//     return res.json(postList);
+//   } catch (e) {
+//     res.status(500).send(e);
+//   }
+// });
+
+// router.post('/', async (req, res) => {
+//   //post code here.
+//   let x = 5;
+//   res.json(x);
+// });
+
+// router.delete('/', async (req, res) => {
+//   let x = 5;
+//   res.json(x);
+// });
 
 export default router;

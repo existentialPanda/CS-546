@@ -47,7 +47,7 @@ const exportedMethods = {
       title: title,
       body: body,
       poster: {
-        id: posterId,
+        id: new ObjectId(posterId),
         name: dogThatPosted.name
       }
     };
@@ -75,7 +75,7 @@ const exportedMethods = {
     if (deletionInfo.lastErrorObject.n === 0) {
       throw `Could not delete post with id of ${id}`;
     }
-    return {deleted: true};
+    return {postTitle: deletionInfo.value.title, deleted: true};
   },
   async updatePost(id, title, body, posterId) {
     if (!id) throw 'You must provide an id to search for';
@@ -107,7 +107,7 @@ const exportedMethods = {
       title: title,
       body: body,
       poster: {
-        id: posterId,
+        id: new ObjectId(posterId),
         name: dogThatPosted.name
       }
     };

@@ -18,6 +18,7 @@
     //Now we are going to loop through the data, creating each element group for each todo in the data
     //Pay attention, when I'm building the html elements, I check the notDone field and display a different
     //element depending on if the todo is done or not
+    console.log(responseMessage);
     responseMessage.map((todoItem) => {
       let element = $(
         `<div class="row" class="todo-item"><div class="col-sm-12 col-md-8"><h3>${
@@ -28,8 +29,10 @@
             : '<em>This task has been completed</em></div></div>'
         }`
       );
-      //bind the todo link for the click event
-      bindEventsToTodoItem(element);
+      if (todoItem.notDone) {
+        //bind the todo link for the click event
+        bindEventsToTodoItem(element);
+      }
       //append the todo to the page
       todoArea.append(element);
     });
@@ -51,12 +54,13 @@
       };
 
       $.ajax(requestConfig).then(function (responseMessage) {
+        console.log(responseMessage);
         let data = responseMessage;
         let element = $(
           `<div class="row" class="todo-item"><div class="col-sm-12 col-md-8"><h3>${data.title}</h3><p>${data.task}</p><em>This task has been completed</em></div></div>`
         );
 
-        bindEventsToTodoItem(element);
+        //bindEventsToTodoItem(element);
         todoItem.replaceWith(element);
       });
     });

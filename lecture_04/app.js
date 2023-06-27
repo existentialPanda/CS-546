@@ -103,7 +103,7 @@ try {
     sashaPost._id.toString(),
     "For Love of Bleu d'Auvergne",
     sashaPost.body,
-    sashaPost.poster.id
+    sashaPost.poster.id.toString()
   );
   console.log('Now, the post is:');
   console.log(updatedPost);
