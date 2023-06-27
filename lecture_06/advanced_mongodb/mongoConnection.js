@@ -2,7 +2,7 @@ import {MongoClient} from 'mongodb';
 const settings = {
   mongoConfig: {
     serverUrl: 'mongodb://localhost:27017/',
-    database: 'lecture6'
+    database: 'movies'
   }
 };
 const mongoConfig = settings.mongoConfig;

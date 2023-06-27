@@ -34,8 +34,10 @@ console.log(directorOrYear);
 
 const sortByTitleYearDec = await advMongo.getAllMoviesSortedByTitleAscYearDec();
 console.log(sortByTitleYearDec);
+
 const sortByTitleYearAsc = await advMongo.getAllMoviesSortedByTitleAscYearAsc();
 console.log(sortByTitleYearAsc);
+
 const selectFields = await advMongo.getAllMoviesTitleDirectorCastOnly();
 console.log(selectFields);
 
@@ -76,8 +78,8 @@ console.log(updateDirector);
 const incYear = await advMongo.bumpReleaseYearUp(1);
 console.log(incYear);
 
-const findLeo = await advMongo.findByCast('Elliot Page');
-console.log(findLeo);
+const findElliot = await advMongo.findByCast('Elliot Page');
+console.log(findElliot);
 
 const findPhil = await advMongo.findByReviewerName('Phil');
 console.log(findPhil);

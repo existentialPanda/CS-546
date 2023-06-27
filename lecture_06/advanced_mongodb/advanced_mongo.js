@@ -234,8 +234,8 @@ const exportedMethods = {
   },
 
   async updateDirector(id, newDirector) {
-    if (id === undefined) return Promise.reject('No id provided');
-    if (!newDirector) return Promise.reject('No newDirector provided');
+    if (id === undefined) throw 'No id provided';
+    if (!newDirector) throw 'No newDirector provided';
     const movieCollection = await advancedMovies();
     // we use $set to update only the fields specified
     await movieCollection.updateOne(
@@ -247,7 +247,7 @@ const exportedMethods = {
   },
 
   async bumpReleaseYearUp(id) {
-    if (id === undefined) return Promise.reject('No id provided');
+    if (id === undefined) throw 'No id provided';
     const movieCollection = await advancedMovies();
     // Can increment positively or negatively by any value
     await movieCollection.updateOne({_id: id}, {$inc: {'info.release': 1}});
@@ -256,7 +256,7 @@ const exportedMethods = {
   },
 
   async doubleRating(id) {
-    if (id === undefined) return Promise.reject('No id provided');
+    if (id === undefined) throw 'No id provided';
     const movieCollection = await advancedMovies();
     // Can multiply positively or negatively by any value
     await movieCollection.updateOne({_id: id}, {$mul: {rating: 2}});
@@ -265,7 +265,7 @@ const exportedMethods = {
   },
 
   async removeRating(id) {
-    if (id === undefined) return Promise.reject('No id provided');
+    if (id === undefined) throw 'No id provided';
     const movieCollection = await advancedMovies();
     await movieCollection.updateOne({_id: id}, {$unset: {rating: ''}});
 
@@ -273,8 +273,8 @@ const exportedMethods = {
   },
 
   async updateRatingToMinValue(id, newRating) {
-    if (id === undefined) return Promise.reject('No id provided');
-    if (newRating === undefined) return Promise.reject('no rating provided');
+    if (id === undefined) throw 'No id provided';
+    if (newRating === undefined) throw 'no rating provided';
     const movieCollection = await advancedMovies();
     // if the value is higher than newRating, it will change to newRating; otherwise, it
     // will stay as is
@@ -284,8 +284,8 @@ const exportedMethods = {
   },
 
   async updateRatingToMaxValue(id, newRating) {
-    if (id === undefined) return Promise.reject('No id provided');
-    if (newRating === undefined) return Promise.reject('no rating provided');
+    if (id === undefined) throw 'No id provided';
+    if (newRating === undefined) throw 'no rating provided';
     const movieCollection = await advancedMovies();
     // if the value is lower than newRating, it will change to newRating; otherwise, it
     // will stay as is
@@ -299,8 +299,7 @@ const exportedMethods = {
   // =================
 
   async findByCast(name) {
-    if (!name)
-      return Promise.reject('You must provide a name for the cast member');
+    if (!name) throw 'You must provide a name for the cast member';
     const movieCollection = await advancedMovies();
     return await movieCollection.find({cast: name}).toArray();
   },
@@ -322,6 +321,8 @@ const exportedMethods = {
       {'reviews._id': reviewId},
       {projection: {_id: 0, 'reviews.$': 1}}
     );
+
+    console.log(foundReview.reviews);
     return foundReview.reviews[0];
   },
 
