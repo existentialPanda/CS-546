@@ -74,7 +74,6 @@ router
         .status(400)
         .json({error: 'There are no fields in the request body'});
     }
-
     //check all the inputs that will return 400 if they fail
     try {
       req.params.id = validation.checkId(req.params.id, 'ID url param');
