@@ -89,7 +89,7 @@ router
       );
       res.json(updatedUser);
     } catch (e) {
-      res.status(404).send({error: message});
+      res.status(404).send({error: e});
     }
   })
   .patch(async (req, res) => {
@@ -125,7 +125,7 @@ router
       );
       res.json(updatedUser);
     } catch (e) {
-      res.status(404).send({error: message});
+      res.status(404).send({error: e});
     }
   })
   .delete(async (req, res) => {
@@ -139,7 +139,7 @@ router
       let deletedUser = await userData.removeUser(req.params.id);
       res.json(deletedUser);
     } catch (e) {
-      res.status(404).send({error: message});
+      res.status(404).send({error: e});
     }
   });
 
