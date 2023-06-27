@@ -9,7 +9,6 @@ const exportedMethods = {
 
   // more simple stuff
   async getMovie(id) {
-    console.log('inGetMovie');
     if (id === undefined) throw 'You must provide an ID';
     const movieCollection = await advancedMovies();
     const movie = await movieCollection.findOne({_id: id});
@@ -313,11 +312,9 @@ const exportedMethods = {
     return await movieCollection
       .find({'reviews.reviewer': reviewerName})
       .toArray();
-    // alternatively, we can pass an entire document describing our subdocument in our array using $elemMatch
-    //            return movieCollection.find({ "reviews": { $elemMatch: { "reviewer": reviewerName } } }).toArray();
   },
 
-  //return JUST the review without the movie information
+  //return JUST a single review without the movie information
   async findByReviewIdReviewOnly(reviewId) {
     if (!reviewId) throw 'You must provide a name for the reviewer';
     const movieCollection = await advancedMovies();
@@ -325,7 +322,6 @@ const exportedMethods = {
       {'reviews._id': reviewId},
       {projection: {_id: 0, 'reviews.$': 1}}
     );
-    console.dir(foundReview, {depth: null});
     return foundReview.reviews[0];
   },
 

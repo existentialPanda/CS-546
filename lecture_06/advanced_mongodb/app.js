@@ -63,6 +63,10 @@ console.log(limitFirstTwo);
 const skipAndLimit = await advMongo.getAllMoviesSkipFirstLimitThree();
 console.log(skipAndLimit);
 
+const skipLimitSort =
+  await advMongo.getAllMoviesSkipFirstLimitThreeSortByTitleDec();
+console.log(skipLimitSort);
+
 const updateTitle = await advMongo.updateTitle(1, 'inception');
 console.log(updateTitle);
 
