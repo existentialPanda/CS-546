@@ -49,9 +49,9 @@ let exportedMethods = {
       lastName: lastName
     };
     const userCollection = await users();
-    const updateInfo = await userCollection.findOneAndUpdate(
+    const updateInfo = await userCollection.findOneAndReplace(
       {_id: new ObjectId(id)},
-      {$set: userUpdateInfo},
+      userUpdateInfo,
       {returnDocument: 'after'}
     );
     if (updateInfo.lastErrorObject.n === 0)
