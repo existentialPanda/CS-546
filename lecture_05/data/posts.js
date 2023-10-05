@@ -43,9 +43,8 @@ const exportedMethods = {
     const deletionInfo = await postCollection.findOneAndDelete({
       _id: new ObjectId(id)
     });
-    if (deletionInfo.lastErrorObject.n === 0)
-      throw `Could not delete post with id of ${id}`;
-    return {...deletionInfo.value, deleted: true};
+    if (!deletionInfo) throw `Could not delete post with id of ${id}`;
+    return {...deletionInfo, deleted: true};
   },
   async updatePost(id, title, body, posterId) {
     id = validation.checkId(id);
@@ -69,8 +68,8 @@ const exportedMethods = {
       {$set: updatedPost},
       {returnDocument: 'after'}
     );
-    if (updateInfo.lastErrorObject.n === 0) throw 'Error: Update failed';
-    return updateInfo.value;
+    if (!updateInfo) throw 'Error: Update failed';
+    return updateInfo;
   }
 };
 

@@ -54,9 +54,8 @@ const exportedMethods = {
     const deletionInfo = await postCollection.findOneAndDelete({
       _id: new ObjectId(id)
     });
-    if (deletionInfo.lastErrorObject.n === 0)
-      throw `Could not delete post with id of ${id}`;
-    return {...deletionInfo.value, deleted: true};
+    if (!deletionInfo) throw `Could not delete post with id of ${id}`;
+    return {...deletionInfo, deleted: true};
   },
   async updatePostPut(id, updatedPost) {
     id = validation.checkId(id);
@@ -86,9 +85,9 @@ const exportedMethods = {
       updatedPostData,
       {returnDocument: 'after'}
     );
-    if (updateInfo.lastErrorObject.n === 0)
+    if (!updateInfo)
       throw `Error: Update failed! Could not update post with id ${id}`;
-    return updateInfo.value;
+    return updateInfo;
   },
   async updatePostPatch(id, updatedPost) {
     const updatedPostData = {};
@@ -125,10 +124,9 @@ const exportedMethods = {
       {$set: updatedPostData},
       {returnDocument: 'after'}
     );
-    if (newPost.lastErrorObject.n === 0)
-      throw `Could not update the post with id ${id}`;
+    if (!newPost) throw `Could not update the post with id ${id}`;
 
-    return newPost.value;
+    return newPost;
   },
   async renameTag(oldTag, newTag) {
     oldTag = validation.checkString(oldTag, 'Old Tag');

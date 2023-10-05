@@ -34,10 +34,9 @@ let exportedMethods = {
     const deletionInfo = await userCollection.findOneAndDelete({
       _id: new ObjectId(id)
     });
-    if (deletionInfo.lastErrorObject.n === 0)
-      throw `Error: Could not delete user with id of ${id}`;
+    if (!deletionInfo) throw `Error: Could not delete user with id of ${id}`;
 
-    return {...deletionInfo.value, deleted: true};
+    return {...deletionInfo, deleted: true};
   },
   async updateUserPut(id, firstName, lastName) {
     id = validation.checkId(id);
@@ -54,10 +53,10 @@ let exportedMethods = {
       userUpdateInfo,
       {returnDocument: 'after'}
     );
-    if (updateInfo.lastErrorObject.n === 0)
+    if (!updateInfo)
       throw `Error: Update failed, could not find a user with id of ${id}`;
 
-    return updateInfo.value;
+    return updateInfo;
   },
 
   async updateUserPatch(id, userInfo) {
@@ -79,10 +78,10 @@ let exportedMethods = {
       {$set: userInfo},
       {returnDocument: 'after'}
     );
-    if (updateInfo.lastErrorObject.n === 0)
+    if (!updateInfo)
       throw `Error: Update failed, could not find a user with id of ${id}`;
 
-    return updateInfo.value;
+    return updateInfo;
   }
 };
 
