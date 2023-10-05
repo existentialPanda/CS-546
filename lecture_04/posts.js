@@ -72,10 +72,10 @@ const exportedMethods = {
       _id: new ObjectId(id)
     });
 
-    if (deletionInfo.lastErrorObject.n === 0) {
+    if (!deletionInfo) {
       throw `Could not delete post with id of ${id}`;
     }
-    return {postTitle: deletionInfo.value.title, deleted: true};
+    return {postTitle: deletionInfo.title, deleted: true};
   },
   async updatePost(id, title, body, posterId) {
     if (!id) throw 'You must provide an id to search for';
@@ -117,7 +117,7 @@ const exportedMethods = {
       updatedPost
     );
 
-    if (updatedInfo.lastErrorObject.n === 0) {
+    if (!updatedInfo) {
       throw 'could not update post successfully';
     }
 

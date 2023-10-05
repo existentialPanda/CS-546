@@ -67,10 +67,10 @@ const exportedMethods = {
       _id: new ObjectId(id)
     });
 
-    if (deletionInfo.lastErrorObject.n === 0) {
+    if (!deletionInfo) {
       throw `Could not delete dog with id of ${id}`;
     }
-    return `${deletionInfo.value.name} has been deleted.`;
+    return `${deletionInfo.name} has been deleted.`;
   },
   async updateDog(id, name, breeds) {
     if (!id) throw 'You must provide an id to search for';
@@ -105,11 +105,11 @@ const exportedMethods = {
       {$set: updatedDog},
       {returnDocument: 'after'}
     );
-    if (updatedInfo.lastErrorObject.n === 0) {
+    if (!updatedInfo) {
       throw 'could not update dog successfully';
     }
-    updatedInfo.value._id = updatedInfo.value._id.toString();
-    return updatedInfo.value;
+    updatedInfo._id = updatedInfo._id.toString();
+    return updatedInfo;
   }
 };
 

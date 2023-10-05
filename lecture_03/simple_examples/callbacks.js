@@ -34,13 +34,13 @@ setInterval(function () {
 // console.log('I AM HERE!!!!');
 //another example using the .map() function
 
-const list = ['man', 'woman', 'child'];
+const list = ['super', 'bat', 'spider'];
 
 // create a new array
 // loop over the array and map the data to new content
 
-const newList = list.map(function (val) {
-  return val + 'kind';
+const newList = list.map((val) => {
+  return val + 'man';
 });
 
 //newList = ['mankind', 'womankind', 'childkind'];

@@ -72,7 +72,7 @@ app.use(async (req, res, next) => {
 app.use('/admin', async (req, res, next) => {
   console.log("I'm in the admin middleware");
   return res.status(403).json({error: '403: Forbidden'});
-  next();
+  //next();
 });
 
 // 7.  One which will change the request method for a route before it hits the route or next middleware

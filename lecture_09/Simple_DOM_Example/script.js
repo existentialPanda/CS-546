@@ -3,6 +3,7 @@ let textInput = document.getElementById('text_input');
 let errorDiv = document.getElementById('error');
 let myUl = document.getElementById('list');
 let frmLabel = document.getElementById('formLabel');
+let myName = null;
 if (myForm) {
   myForm.addEventListener('submit', (event) => {
     console.log('Form submission fired');
@@ -13,8 +14,9 @@ if (myForm) {
       errorDiv.hidden = true;
       frmLabel.classList.remove('error');
       let li = document.createElement('li');
-
       li.innerHTML = textInput.value;
+      myName = textInput.value;
+      alert(myName);
       myUl.appendChild(li);
       myForm.reset();
       textInput.focus();

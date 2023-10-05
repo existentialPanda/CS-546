@@ -29,8 +29,8 @@ router
     res.json(todos);
   })
   .post(async (req, res) => {
-    // let cleanName = req.body.name;
-    // let cleanDesc = req.body.description;
+    //let cleanName = req.body.name;
+    //let cleanDesc = req.body.description;
 
     let cleanName = xss(req.body.name);
     let cleanDesc = xss(req.body.description);

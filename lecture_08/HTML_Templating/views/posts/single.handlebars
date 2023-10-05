@@ -4,12 +4,12 @@
   <p>{{ post.body }}</p>
 
   {{#if post.tags.length}}
-    <h3>Tags</h3>
-    <ul>
-      {{#each post.tags}}
-        <li><a href="/posts/tag/{{this}}">{{this}}</a></li>
-      {{/each}}
-    </ul>
+  <h3>Tags</h3>
+  <ul>
+    {{#each post.tags}}
+    <li><a href="/posts/tag/{{this}}">{{this}}</a></li>
+    {{/each}}
+  </ul>
   {{/if}}
   <a href="/posts">Back to All Posts</a>
 </article>
