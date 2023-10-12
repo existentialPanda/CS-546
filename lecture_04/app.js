@@ -1,8 +1,8 @@
 import dogData from './dogs.js';
 import postData from './posts.js';
 import {dbConnection, closeConnection} from './mongoConnection.js';
-
 //lets drop the database each time this is run
+
 const db = await dbConnection();
 await db.dropDatabase();
 

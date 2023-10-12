@@ -42,6 +42,7 @@ const exportedMethods = {
     posterId = posterId.trim();
 
     const dogThatPosted = await dogData.getDogById(posterId);
+    if (!dogThatPosted) throw 'Could not find a dog with that ID';
 
     const newPostInfo = {
       title: title,
@@ -102,6 +103,7 @@ const exportedMethods = {
     posterId = posterId.trim();
 
     const dogThatPosted = await dogData.getDogById(posterId);
+    if (!dogThatPosted) throw 'Could not find a dog with that ID';
 
     let updatedPost = {
       title: title,
@@ -114,14 +116,15 @@ const exportedMethods = {
     const postCollection = await posts();
     const updatedInfo = await postCollection.findOneAndReplace(
       {_id: new ObjectId(id)},
-      updatedPost
+      updatedPost,
+      {returnDocument: 'after'}
     );
 
     if (!updatedInfo) {
       throw 'could not update post successfully';
     }
 
-    return await this.getPostById(id);
+    return updatedInfo;
   }
 };
 

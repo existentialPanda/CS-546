@@ -27,7 +27,7 @@ const exportedMethods = {
       title: title,
       body: body,
       poster: {
-        id: posterId,
+        id: new ObjectId(posterId),
         name: `${userThatPosted.firstName} ${userThatPosted.lastName}`
       }
     };

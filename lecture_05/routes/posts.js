@@ -25,24 +25,26 @@ router
     );
   })
   .patch(async (req, res) => {
-    //patch code here.
+    `PATCH request to http://localhost:3000/posts/${req.params.id}`;
   });
 
-router.get('/:id', async (req, res) => {
-  //get route here.
-});
+//alternitive way to create the same /:id routes that are defined above
 
-router.post('/:id', async (req, res) => {
-  //get route here.
-});
+// router.get('/:id', async (req, res) => {
+//   //get route here.
+// });
 
-router.delete('/:id', async (req, res) => {
-  //get route here.
-});
+// router.post('/:id', async (req, res) => {
+//   //get route here.
+// });
 
-router.patch('/:id', async (req, res) => {
-  //get route here.
-});
+// router.delete('/:id', async (req, res) => {
+//   //get route here.
+// });
+
+// router.patch('/:id', async (req, res) => {
+//   //get route here.
+// });
 
 router
   .route('/')
@@ -60,6 +62,8 @@ router
   .delete(async (req, res) => {
     return res.send('DELETE request to http://localhost:3000/posts');
   });
+
+//alternitive way to create the same / routes that are defined above
 
 // router.get('/', async (req, res) => {
 //   try {
