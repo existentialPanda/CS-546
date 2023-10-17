@@ -3,6 +3,7 @@ import {ObjectId} from 'mongodb';
 
 const exportedMethods = {
   async getDogById(id) {
+    let x = new ObjectId();
     if (!id) throw 'You must provide an id to search for';
     if (typeof id !== 'string') throw 'Id must be a string';
     if (id.trim().length === 0)

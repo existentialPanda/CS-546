@@ -8,10 +8,14 @@ router
   .get(async (req, res) => {
     try {
       req.params.id = validation.checkId(req.params.id);
-      const user = await userData.getUserById(req.params.id);
-      res.json(user);
     } catch (e) {
-      res.status(404).json(e);
+      return res.status(400).json({error: e});
+    }
+    try {
+      const user = await userData.getUserById(req.params.id);
+      return res.json(user);
+    } catch (e) {
+      return res.status(404).json(e);
     }
   })
   .post(async (req, res) => {
@@ -26,19 +30,22 @@ router
   .get(async (req, res) => {
     try {
       const userList = await userData.getAllUsers();
-      res.json(userList);
+      return res.json(userList);
     } catch (e) {
       // Something went wrong with the server!
-      res.status(500).send(e);
+      return res.status(500).send(e);
     }
   })
   .post(async (req, res) => {
     // Not implemented
-    res.send('POST request to http://localhost:3000/users');
+    return res.send('POST request to http://localhost:3000/users');
   })
   .delete(async (req, res) => {
     // Not implemented
-    res.send('DELETE request to http://localhost:3000/users');
+    return res.send('DELETE request to http://localhost:3000/users');
+  })
+  .put(async (req, res) => {
+    return res.send('PUT request to http://localhost:3000/users');
   });
 
 export default router;
