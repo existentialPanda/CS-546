@@ -8,9 +8,9 @@ router
   .get(async (req, res) => {
     try {
       const postList = await postData.getAllPosts();
-      res.json(postList);
+      return res.json(postList);
     } catch (e) {
-      res.status(500).json({error: e});
+      return res.status(500).json({error: e});
     }
   })
   .post(async (req, res) => {
@@ -43,9 +43,9 @@ router
     try {
       const {title, body, tags, posterId} = blogPostData;
       const newPost = await postData.addPost(title, body, posterId, tags);
-      res.json(newPost);
+      return res.json(newPost);
     } catch (e) {
-      res.status(500).json({error: e});
+      return res.status(500).json({error: e});
     }
   });
 
@@ -61,9 +61,9 @@ router
     //try getting the post by ID
     try {
       const post = await postData.getPostById(req.params.id);
-      res.json(post);
+      return res.json(post);
     } catch (e) {
-      res.status(404).json({error: e});
+      return res.status(404).json({error: e});
     }
   })
   .put(async (req, res) => {
@@ -102,9 +102,9 @@ router
         req.params.id,
         updatedData
       );
-      res.json(updatedPost);
+      return res.json(updatedPost);
     } catch (e) {
-      res.status(404).json({error: e});
+      return res.status(404).json({error: e});
     }
   })
   .patch(async (req, res) => {
@@ -141,9 +141,9 @@ router
         req.params.id,
         requestBody
       );
-      res.json(updatedPost);
+      return res.json(updatedPost);
     } catch (e) {
-      res.status(404).json({error: e});
+      return res.status(404).json({error: e});
     }
   })
   .delete(async (req, res) => {
@@ -156,9 +156,9 @@ router
     //try to delete post
     try {
       let deletedPost = await postData.removePost(req.params.id);
-      res.json(deletedPost);
+      return res.json(deletedPost);
     } catch (e) {
-      res.status(404).json({error: e});
+      return res.status(404).json({error: e});
     }
   });
 
@@ -172,9 +172,9 @@ router.route('/tag/:tag').get(async (req, res) => {
   //try to get all posts by tag
   try {
     const postList = await postData.getPostsByTag(req.params.tag);
-    res.json(postList);
+    return res.json(postList);
   } catch (e) {
-    res.status(404).json({error: e});
+    return res.status(404).json({error: e});
   }
 });
 

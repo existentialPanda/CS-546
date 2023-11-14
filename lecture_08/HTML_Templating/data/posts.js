@@ -12,7 +12,7 @@ const exportedMethods = {
   async getPostById(id) {
     id = validation.checkId(id);
     const postCollection = await posts();
-    const post = await postCollection.findOne({_id: ObjectId(id)});
+    const post = await postCollection.findOne({_id: new ObjectId(id)});
 
     if (!post) throw 'Error: Post not found';
 
@@ -38,7 +38,7 @@ const exportedMethods = {
       title: title,
       body: body,
       poster: {
-        id: ObjectId(posterId),
+        id: new ObjectId(posterId),
         name: `${userThatPosted.firstName} ${userThatPosted.lastName}`
       },
       tags: tags
@@ -52,7 +52,7 @@ const exportedMethods = {
     id = validation.checkId(id);
     const postCollection = await posts();
     const deletionInfo = await postCollection.findOneAndDelete({
-      _id: ObjectId(id)
+      _id: new ObjectId(id)
     });
     if (deletionInfo.lastErrorObject.n === 0)
       throw [404, `Could not delete post with id of ${id}`];
@@ -82,7 +82,7 @@ const exportedMethods = {
     };
     const postCollection = await posts();
     const updateInfo = await postCollection.findOneAndReplace(
-      {_id: ObjectId(id)},
+      {_id: new ObjectId(id)},
       updatedPostData,
       {returnDocument: 'after'}
     );
@@ -121,7 +121,7 @@ const exportedMethods = {
     }
     const postCollection = await posts();
     let newPost = await postCollection.findOneAndUpdate(
-      {_id: ObjectId(id)},
+      {_id: new ObjectId(id)},
       {$set: updatedPostData},
       {returnDocument: 'after'}
     );

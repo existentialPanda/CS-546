@@ -321,7 +321,7 @@ const exportedMethods = {
       {'reviews._id': reviewId},
       {projection: {_id: 0, 'reviews.$': 1}}
     );
-
+    if (!foundReview) throw 'Review Not found';
     console.log(foundReview.reviews);
     return foundReview.reviews[0];
   },

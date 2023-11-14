@@ -13,7 +13,6 @@ const exportedMethods = {
     id = validation.checkId(id);
     const postCollection = await posts();
     const post = await postCollection.findOne({_id: new ObjectId(id)});
-
     if (!post) throw 'Error: Post not found';
 
     return post;
@@ -33,6 +32,7 @@ const exportedMethods = {
       tags = validation.checkStringArray(tags, 'Tags');
     }
     const userThatPosted = await userData.getUserById(posterId);
+    if (!userThatPosted) throw 'User for post not found';
 
     const newPost = {
       title: title,
@@ -68,7 +68,7 @@ const exportedMethods = {
       updatedPost.tags = validation.checkStringArray(updatedPost.tags, 'Tags');
     }
     const userThatPosted = await userData.getUserById(updatedPost.posterId);
-
+    if (!userThatPosted) throw 'User for post not found';
     let updatedPostData = {
       title: updatedPost.title,
       body: updatedPost.body,
@@ -98,6 +98,7 @@ const exportedMethods = {
       );
 
       const userThatPosted = await userData.getUserById(updatedPost.posterId);
+      if (!userThatPosted) throw 'User for post not found';
       updatedPostData['poster.firstName'] = userThatPosted.firstName;
       updatedPostData['poster.lastName'] = userThatPosted.lastName;
     }
@@ -132,6 +133,7 @@ const exportedMethods = {
     oldTag = validation.checkString(oldTag, 'Old Tag');
     newTag = validation.checkString(newTag, 'New Tag');
     if (oldTag === newTag) throw 'tags are the same';
+
     let findDocuments = {
       tags: oldTag
     };

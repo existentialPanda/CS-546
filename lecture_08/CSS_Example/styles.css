@@ -1,80 +1,84 @@
 p {
-	color: red;
-	font-weight: bold;
+  color: red;
+  font-weight: bold;
 }
 
 #paragraphWithID {
-	color: blue;
-	font-weight: normal;
+  color: blue;
+  font-weight: normal;
 }
 
 h1 {
-	color: salmon;
+  color: salmon;
 }
 
 div h1 {
-	color: green;
+  color: green;
 }
 
 p:first-child {
-	color: purple;
-	font-weight: bolder;
+  color: purple;
+  font-weight: bolder;
 }
 
 p:last-child {
-	color: gray;
-	font-weight: normal;
-	text-decoration: underline;
+  color: gray;
+  font-weight: normal;
+  text-decoration: underline;
 }
 
 #h1withID {
-	color: pink;
-	font-size: 30pt;
-	text-decoration: underline;
+  color: pink;
+  font-size: 30pt;
+  text-decoration: underline;
 }
 
 table,
 tr,
 td {
-	border: 3px solid black;
+  border: 3px solid black;
 }
 
 .btnClass {
-	background-color: navy;
-	color: white;
-	border: 1px solid red;
+  background-color: navy;
+  color: white;
+  border: 1px solid red;
 }
 
 a {
-	color: fuchsia;
-	text-decoration: none;
-	font-size: 32pt;
+  color: fuchsia;
+  text-decoration: none;
+  font-size: 32pt;
 }
 
 a:hover {
-	color: gold;
-	text-decoration: underline;
+  color: gold;
+  text-decoration: underline;
 }
 
 a:visited {
-	color: sienna;
+  color: sienna;
 }
 
 li {
-	background-color: indigo;
-	color: white;
+  background-color: indigo;
+  color: white;
 }
 
 #divColorBorder {
-	border-top: 3px solid red;
-	border-bottom: 3px solid blue;
-	border-right: 3px dotted green;
-	border-left: 3px dashed salmon;
+  border-top: 3px solid red;
+  border-bottom: 3px solid blue;
+  border-right: 3px dotted green;
+  border-left: 3px dashed salmon;
 }
 
 p.about,
 .contact p {
-	color: cyan;
-	text-decoration: none;
-	font-weight: bold;
+  color: cyan;
+  text-decoration: none;
+  font-weight: bold;
 }
+
+/* .noBold {
+  font-weight: normal;
+} */

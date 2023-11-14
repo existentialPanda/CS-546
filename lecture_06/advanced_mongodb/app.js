@@ -104,7 +104,7 @@ const inception = await advMongo.getMovie(1);
 const reviewById = await advMongo.findByReviewIdReviewOnly(
   inception.reviews[0]._id
 );
-console.dir(reviewById, {depth: null});
+console.dir(reviewById);
 
 console.log('done');
 process.exit();

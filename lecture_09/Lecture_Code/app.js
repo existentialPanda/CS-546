@@ -1,13 +1,10 @@
 import express from 'express';
 const app = express();
 import configRoutes from './routes/index.js';
-import {fileURLToPath} from 'url';
-import {dirname} from 'path';
-import exphbs from 'express-handlebars';
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 
-const staticDir = express.static(__dirname + '/public');
+import exphbs from 'express-handlebars';
+
+const staticDir = express.static('public');
 
 const handlebarsInstance = exphbs.create({
   defaultLayout: 'main',
@@ -18,7 +15,9 @@ const handlebarsInstance = exphbs.create({
         return new Handlebars.SafeString(JSON.stringify(obj, null, spacing));
 
       return new Handlebars.SafeString(JSON.stringify(obj));
-    }
+    },
+
+    partialsDir: ['views/partials/']
   }
 });
 

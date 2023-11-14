@@ -8,9 +8,9 @@ router
   .get(async (req, res) => {
     try {
       let userList = await userData.getAllUsers();
-      res.json(userList);
+      return res.json(userList);
     } catch (e) {
-      res.sendStatus(500);
+      return res.sendStatus(500);
     }
   })
   .post(async (req, res) => {
@@ -39,9 +39,9 @@ router
         userInfo.firstName,
         userInfo.lastName
       );
-      res.json(newUser);
+      return res.json(newUser);
     } catch (e) {
-      res.sendStatus(500);
+      return res.sendStatus(500);
     }
   });
 
@@ -55,9 +55,9 @@ router
     }
     try {
       let user = await userData.getUserById(req.params.id);
-      res.json(user);
+      return res.json(user);
     } catch (e) {
-      res.status(404).json({error: 'User not found'});
+      return res.status(404).json({error: 'User not found'});
     }
   })
   .put(async (req, res) => {
@@ -87,9 +87,9 @@ router
         userInfo.firstName,
         userInfo.lastName
       );
-      res.json(updatedUser);
+      return res.json(updatedUser);
     } catch (e) {
-      res.status(404).send({error: e});
+      return res.status(404).send({error: e});
     }
   })
   .patch(async (req, res) => {
@@ -123,9 +123,9 @@ router
         req.params.id,
         userInfo
       );
-      res.json(updatedUser);
+      return res.json(updatedUser);
     } catch (e) {
-      res.status(404).send({error: e});
+      return res.status(404).send({error: e});
     }
   })
   .delete(async (req, res) => {
@@ -137,9 +137,9 @@ router
 
     try {
       let deletedUser = await userData.removeUser(req.params.id);
-      res.json(deletedUser);
+      return res.json(deletedUser);
     } catch (e) {
-      res.status(404).send({error: e});
+      return res.status(404).send({error: e});
     }
   });
 

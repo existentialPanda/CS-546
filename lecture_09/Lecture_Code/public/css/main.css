@@ -1,6 +1,6 @@
 body {
   background: #fefefe;
-  font-family: Georgia, Cambria, "Times New Roman", Times, serif;
+  font-family: Georgia, Cambria, 'Times New Roman', Times, serif;
   font-size: 15pt;
 }
 
@@ -55,4 +55,9 @@ p {
 .post {
   width: 75%;
   border-bottom: 1px dashed #333;
+}
+
+.error {
+  color: red;
+  font-weight: bold;
 }

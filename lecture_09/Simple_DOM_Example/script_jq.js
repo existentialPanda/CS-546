@@ -4,7 +4,7 @@ $('#myForm').submit((event) => {
     $('#error').hide();
     $('#formLabel').removeClass('error');
     $('#text_input').removeClass('inputClass');
-    const li = `<li> ${$('#text_input').val()} </li>`;
+    const li = `<li class="error" width=> ${$('#text_input').val()} </li>`;
     $('#list').append(li);
     $('#myForm').trigger('reset');
     $('#text_input').focus();

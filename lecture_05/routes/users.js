@@ -19,10 +19,14 @@ router
     }
   })
   .post(async (req, res) => {
-    res.send(`POST request to http://localhost:3000/users/${req.params.id}`);
+    return res.send(
+      `POST request to http://localhost:3000/users/${req.params.id}`
+    );
   })
   .delete(async (req, res) => {
-    res.send(`DELETE request to http://localhost:3000/users/${req.params.id}`);
+    return res.send(
+      `DELETE request to http://localhost:3000/users/${req.params.id}`
+    );
   });
 
 router

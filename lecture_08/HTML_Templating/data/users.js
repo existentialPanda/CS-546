@@ -11,7 +11,7 @@ let exportedMethods = {
   async getUserById(id) {
     id = validation.checkId(id);
     const userCollection = await users();
-    const user = await userCollection.findOne({_id: ObjectId(id)});
+    const user = await userCollection.findOne({_id: new ObjectId(id)});
     if (!user) throw 'Error: User not found';
     return user;
   },
@@ -32,7 +32,7 @@ let exportedMethods = {
     id = validation.checkId(id);
     const userCollection = await users();
     const deletionInfo = await userCollection.findOneAndDelete({
-      _id: ObjectId(id)
+      _id: new ObjectId(id)
     });
     if (deletionInfo.lastErrorObject.n === 0)
       throw [404, `Error: Could not delete user with id of ${id}`];
@@ -50,7 +50,7 @@ let exportedMethods = {
     };
     const userCollection = await users();
     const updateInfo = await userCollection.findOneAndUpdate(
-      {_id: ObjectId(id)},
+      {_id: new ObjectId(id)},
       {$set: userUpdateInfo},
       {returnDocument: 'after'}
     );
@@ -78,7 +78,7 @@ let exportedMethods = {
       );
     const userCollection = await users();
     const updateInfo = await userCollection.findOneAndUpdate(
-      {_id: ObjectId(id)},
+      {_id: new ObjectId(id)},
       {$set: userInfo},
       {returnDocument: 'after'}
     );

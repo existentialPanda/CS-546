@@ -1,13 +1,7 @@
 import express from 'express';
 const app = express();
 import configRoutes from './routes/index.js';
-import {fileURLToPath} from 'url';
-import {dirname} from 'path';
 import exphbs from 'express-handlebars';
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-const staticDir = express.static(__dirname + '/public');
 
 const rewriteUnsupportedBrowserMethods = (req, res, next) => {
   // If the user posts to the server with a property called _method, rewrite the request's method
@@ -22,7 +16,7 @@ const rewriteUnsupportedBrowserMethods = (req, res, next) => {
   next();
 };
 
-app.use('/public', staticDir);
+app.use('/public', express.static('public'));
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(rewriteUnsupportedBrowserMethods);

@@ -3,11 +3,13 @@ const router = Router();
 import calculator from '../data/calculator.js';
 
 router.get('/static', (req, res) => {
-  res.render('calculator/static', {});
+  res.render('calculator/static', {partial: 'static_script'});
 });
 
 router.get('/server', (req, res) => {
-  res.render('calculator/server', {});
+  res.render('calculator/server', {
+    partial: 'server_script'
+  });
 });
 
 router.post('/server', (req, res) => {
@@ -36,20 +38,21 @@ router.post('/server', (req, res) => {
     }
     console.log('result', result);
   } catch (e) {
-    res.render('calculator/server', {
+    return res.render('calculator/server', {
       firstNumber: firstNumber,
       secondNumber: secondNumber,
       operation: operation,
-      error: e
+      error: e,
+      partial: 'server_script'
     });
-    return;
   }
 
   res.render('calculator/server', {
     firstNumber: firstNumber,
     secondNumber: secondNumber,
     operation: operation,
-    result: result
+    result: result,
+    partial: 'server_script'
   });
 });
 
